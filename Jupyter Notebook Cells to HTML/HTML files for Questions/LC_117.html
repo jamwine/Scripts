@@ -1,0 +1,85 @@
+<h2><a href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/">117. Populating Next Right Pointers in Each Node II</a></h2>
+
+<pre><code>Given a binary tree
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/117.png" alt="117.png"></p>
+
+<pre><code>Input: root = [1,2,3,4,5,null,7]
+Output: [1,#,2,3,#,4,5,7,#]
+Explanation: Given the above binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
+
+
+Example 2:
+Input: root = []
+Output: []
+
+
+Constraints:
+The number of nodes in the tree is in the range [0, 6000].
+-100 &lt;= Node.val &lt;= 100
+
+
+Follow-up:
+You may only use constant extra space.
+The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Definition for a Node.</span>
+<span class="sd">class Node:</span>
+<span class="sd">    def __init__(self, val: int = 0, left: &#39;Node&#39; = None, right: &#39;Node&#39; = None, next: &#39;Node&#39; = None):</span>
+<span class="sd">        self.val = val</span>
+<span class="sd">        self.left = left</span>
+<span class="sd">        self.right = right</span>
+<span class="sd">        self.next = next</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="s1">&#39;Node&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Node&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">root</span><span class="p">:</span> <span class="k">return</span> <span class="n">root</span>
+
+        <span class="n">current</span> <span class="o">=</span> <span class="n">root</span>
+
+        <span class="c1"># loop for each level (top to bottom)</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">head</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+
+            <span class="c1"># loop for current level (left to right)</span>
+            <span class="k">while</span> <span class="n">current</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">left</span> 
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">next</span> 
+
+                <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">right</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">next</span>
+
+                <span class="c1"># next sibling</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+
+            <span class="n">current</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="k">return</span> <span class="n">root</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

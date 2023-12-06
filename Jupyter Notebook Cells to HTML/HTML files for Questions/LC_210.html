@@ -1,0 +1,85 @@
+<h2><a href="https://leetcode.com/problems/course-schedule-ii/">210. Course Schedule II</a></h2>
+
+<pre><code>There are a total of n courses you have to take labelled from 0 to n - 1.
+
+Some courses may have prerequisites, for example, if prerequisites[i] = [ai, bi] this means you must take the course bi before the course ai.
+
+Given the total number of courses numCourses and a list of the prerequisite pairs, return the ordering of courses you should take to finish all courses.
+
+If there are many valid answers, return any of them. If it is impossible to finish all courses, return an empty array.
+
+Example 1:
+
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So the correct course order is [0,1].
+
+Example 2:
+
+Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+Output: [0,2,1,3]
+Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0.
+So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3].
+
+Example 3:
+
+Input: numCourses = 1, prerequisites = []
+Output: [0]
+
+Constraints:
+
+1 &lt;= numCourses &lt;= 2000
+0 &lt;= prerequisites.length &lt;= numCourses * (numCourses - 1)
+prerequisites[i].length == 2
+0 &lt;= ai, bi &lt; numCourses
+ai != bi
+All the pairs [ai, bi] are distinct.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">findOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numCourses</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">prerequisites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">indegree</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">numCourses</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span> <span class="c1"># {independent_course:set(dependent_course)}</span>
+
+        <span class="c1"># calculating the indegree for every course</span>
+        <span class="k">for</span> <span class="n">dependent_course</span><span class="p">,</span> <span class="n">independent_course</span> <span class="ow">in</span> <span class="n">prerequisites</span><span class="p">:</span>
+            <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># mapping distinct dependent courses for every independent course</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">independent_course</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dependent_course</span><span class="p">)</span>
+
+        <span class="c1"># add the courses with no dependencies in the stack</span>
+        <span class="c1"># i.e. push vertices with 0 indegree to the stack</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indegree</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">indegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># pop course from stack, mark it as completed by incrementing the count and appending to the result</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># current represents completed independent course</span>
+            <span class="n">count</span><span class="o">+=</span><span class="mi">1</span> <span class="c1"># course completion count, increment by 1</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="c1"># appending to the result for fetching order</span>
+
+            <span class="c1"># update the dependent courses (corresponding vertices) by removing the connection</span>
+            <span class="k">for</span> <span class="n">dependent_course</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">current</span><span class="p">]:</span>
+                <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span> <span class="c1"># decrementing the count</span>
+
+                <span class="c1"># Some dependent courses will become independent, check again for 0 indegrees</span>
+                <span class="k">if</span> <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dependent_course</span><span class="p">)</span>
+
+        <span class="c1"># fails if there&#39;s a cycle</span>
+        <span class="k">return</span> <span class="n">result</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="n">numCourses</span> <span class="k">else</span> <span class="p">[]</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(|E| + |V|) where |V| is the number of courses, ∣E∣ is the number of dependencies </p>
+
+<p><strong>Space complexity</strong> : O(|E| + |V|) where |V| is the number of courses, ∣E∣ is the number of dependencies </p>

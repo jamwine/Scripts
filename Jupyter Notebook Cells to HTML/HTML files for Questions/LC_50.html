@@ -1,0 +1,57 @@
+<h2><a href="https://leetcode.com/problems/powx-n/">50. Pow(x, n)</a></h2>
+
+<pre><code>Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+
+Example 1:
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+
+
+Example 2:
+Input: x = 2.10000, n = 3
+Output: 9.26100
+
+
+Example 3:
+Input: x = 2.00000, n = -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+
+
+Constraints:
+-100.0 &lt; x &lt; 100.0
+-231 &lt;= n &lt;= 231-1
+-104 &lt;= xn &lt;= 104
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">myPow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">result</span>
+
+        <span class="n">negative</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> 
+            <span class="n">negative</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">n</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">*=</span> <span class="n">x</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span>    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">*=</span> <span class="n">x</span>
+                <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">negative</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(log n), where n represents the length</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

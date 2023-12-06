@@ -1,0 +1,51 @@
+<h2><a href="https://leetcode.com/problems/first-bad-version/">278. First Bad Version</a></h2>
+
+<pre><code>You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API bool isBadVersion(version) which returns whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+
+Example 1:
+Input: n = 5, bad = 4
+Output: 4
+Explanation:
+call isBadVersion(3) -&gt; false
+call isBadVersion(5) -&gt; true
+call isBadVersion(4) -&gt; true
+Then 4 is the first bad version.
+
+
+Example 2:
+Input: n = 1, bad = 1
+Output: 1
+
+
+Constraints:
+1 &lt;= bad &lt;= n &lt;= 231 - 1
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># The isBadVersion API is already defined for you.</span>
+<span class="c1"># def isBadVersion(version: int) -&gt; bool:</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">firstBadVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span>
+
+        <span class="k">while</span> <span class="n">low</span> <span class="o">&lt;=</span> <span class="n">high</span> <span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+            <span class="k">if</span> <span class="n">isBadVersion</span><span class="p">(</span><span class="n">mid</span><span class="p">):</span> 
+                <span class="n">high</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">low</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>                      
+        <span class="k">return</span> <span class="n">low</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(logN) to search target in N numbers</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

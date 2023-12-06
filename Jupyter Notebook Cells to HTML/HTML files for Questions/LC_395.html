@@ -1,0 +1,62 @@
+<h2><a href="https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/">395. Longest Substring with At Least K Repeating Characters</a></h2>
+
+<pre><code>Find the length of the longest substring T of a given string (consists of lowercase letters only) such that every character in T appears no less than k times.
+
+Example 1:
+Input: s = "aaabb", k = 3
+Output: 3
+The longest substring is "aaa", as 'a' is repeated 3 times.
+
+Example 2:
+Input: s = "ababbc", k = 2
+Output: 5
+The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated 3 times.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">longestSubstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">total_uniques</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="c1"># Check all substrings with &quot;i&quot; unique characters only</span>
+        <span class="k">for</span> <span class="n">max_unique</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_uniques</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+            <span class="n">curr_uniques</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">num_found</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Sliding Window</span>
+            <span class="k">for</span> <span class="n">right</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+                <span class="n">idx</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">right</span><span class="p">])</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">curr_uniques</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span> <span class="n">num_found</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Shrink Window if curr_uniques &gt; max_unique, we only want &quot;max_unique&quot; unique characters</span>
+                <span class="k">while</span> <span class="n">curr_uniques</span> <span class="o">&gt;</span> <span class="n">max_unique</span><span class="p">:</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">left</span><span class="p">])</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+                    <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+                    <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">curr_uniques</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> <span class="n">num_found</span> <span class="o">-=</span> <span class="mi">1</span>
+
+                    <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="n">num_found</span> <span class="o">==</span> <span class="n">max_unique</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), where n is the length of string.</p>
+
+<p><strong>Space complexity</strong> : O(n), due to recursive calls</p>

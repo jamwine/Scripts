@@ -1,0 +1,46 @@
+<h2><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></h2>
+
+<pre><code>Given a linked list, remove the n-th node from the end of list and return its head. Given n will always be valid.
+
+Follow up: Could you do this in one pass?
+
+Example 1:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/19.jpg" alt="19.jpg"></p>
+
+<pre><code>Given linked list: 1-&gt;2-&gt;3-&gt;4-&gt;5, and n = 2.
+After removing the second node from the end, the linked list becomes 1-&gt;2-&gt;3-&gt;5.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">removeNthFromEnd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+
+        <span class="n">head</span><span class="o">=</span><span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="o">=</span><span class="n">l1</span>
+        <span class="n">slow</span><span class="o">=</span><span class="n">fast</span><span class="o">=</span><span class="n">head</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">fast</span><span class="o">=</span><span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+            <span class="n">fast</span><span class="o">=</span><span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">slow</span><span class="o">=</span><span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="o">=</span><span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span> 
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), the algorithm makes one traversal of the list of n nodes.</p>
+
+<p><strong>Space complexity</strong> : O(1), we only used constant extra space.</p>

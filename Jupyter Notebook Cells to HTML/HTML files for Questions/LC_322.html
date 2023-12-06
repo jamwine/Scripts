@@ -1,0 +1,66 @@
+<h2><a href="https://leetcode.com/problems/coin-change/">322. Coin Change</a></h2>
+
+<pre><code>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+Example 1:
+
+Input: coins = [1, 2, 5], amount = 11
+Output: 3 
+Explanation: 11 = 5 + 5 + 1
+
+Example 2:
+
+Input: coins = [2], amount = 3
+Output: -1
+
+Note:
+You may assume that you have an infinite number of each kind of coin.
+</code></pre>
+
+<h3>Solution 1</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">coinChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">queue</span> <span class="o">=</span> <span class="p">[(</span><span class="n">value</span><span class="p">,</span> <span class="n">result</span><span class="p">)]</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="n">value</span><span class="p">}</span>
+
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">coin</span> <span class="ow">in</span> <span class="n">coins</span><span class="p">:</span>
+                <span class="n">new_value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="n">coin</span>
+
+                <span class="k">if</span> <span class="n">new_value</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">new_value</span> <span class="o">==</span> <span class="n">amount</span><span class="p">:</span> <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="mi">1</span>
+
+                <span class="k">elif</span> <span class="n">new_value</span> <span class="o">&lt;</span> <span class="n">amount</span><span class="p">:</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_value</span><span class="p">,</span> <span class="n">result</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre>
+</div>
+
+<h3>Solution 2</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">coinChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="c1">#constructing dp array of size (amount + 1)</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">inf</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">amount</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">coin</span> <span class="ow">in</span> <span class="n">coins</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">-</span><span class="n">coin</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">coin</span><span class="p">])</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">dp</span><span class="p">[</span><span class="n">amount</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">amount</span> <span class="k">else</span> <span class="n">dp</span><span class="p">[</span><span class="n">amount</span><span class="p">]</span> 
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(m * n), n is the array of length (amount+1) and m is the number of coins</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

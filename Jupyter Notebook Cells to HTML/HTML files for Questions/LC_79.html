@@ -1,0 +1,80 @@
+<h2><a href="https://leetcode.com/problems/word-search/">79. Word Search</a></h2>
+
+<pre><code>Given a 2D board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+Example:
+
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/79_1.jpg" alt="79_1.jpg"></p>
+
+<pre><code>Given word = "ABCCED", return true.
+
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/79_2.jpg" alt="79_2.jpg"></p>
+
+<pre><code>Given word = "SEE", return true.
+
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/79_3.jpg" alt="79_3.jpg"></p>
+
+<pre><code>Given word = "ABCB", return false.
+
+Constraints:
+
+board and word consists only of lowercase and uppercase English letters.
+1 &lt;= board.length &lt;= 200
+1 &lt;= board[i].length &lt;= 200
+1 &lt;= word.length &lt;= 10^3
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">exist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="n">cols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span><span class="o">&lt;=</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">j</span><span class="o">&lt;</span><span class="n">cols</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">word</span><span class="p">[</span><span class="n">count</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1">#mark the cell visited with &#39;#&#39; and remember the value</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#&#39;</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1">#restore previous value</span>
+            <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="k">return</span> <span class="n">found</span>
+
+        <span class="c1"># Main Function</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> :  O(N) where N is the number of cells in the grid.</p>
+
+<p><strong>Space complexity</strong> : O(N), in place change in the board but due to recursive calls</p>

@@ -1,0 +1,68 @@
+<h2><a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">323. Number of Connected Components in an Undirected Graph</a></h2>
+
+<pre><code>You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph.
+
+Return the number of connected components in the graph.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/323_1.jpg" alt="323_1.jpg"></p>
+
+<pre><code>Input: n = 5, edges = [[0,1],[1,2],[3,4]]
+Output: 2
+
+
+Example 2:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/323_2.jpg" alt="323_2.jpg"></p>
+
+<pre><code>Input: n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]
+Output: 1
+
+
+Constraints:
+1 &lt;= n &lt;= 2000
+1 &lt;= edges.length &lt;= 5000
+edges[i].length == 2
+0 &lt;= ai &lt;= bi &lt; n
+ai != bi
+There are no repeated edges.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">countComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># {vertex:[conected_vertices_list]}</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">unique_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="c1"># Change here for case: &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, etc</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+            <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+                <span class="n">dfs</span><span class="p">(</span><span class="n">neighbor</span><span class="p">)</span>
+
+        <span class="c1"># Main Function</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">unique_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> :  O(E+V), where E represents edges and V represents nodes</p>
+
+<p><strong>Space complexity</strong> : O(E+V) for making graph</p>

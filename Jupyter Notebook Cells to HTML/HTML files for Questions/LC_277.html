@@ -1,0 +1,67 @@
+<h2><a href="https://leetcode.com/problems/find-the-celebrity/">277. Find the Celebrity</a></h2>
+
+<pre><code>Suppose you are at a party with n people (labeled from 0 to n - 1) and among them, there may exist one celebrity. The definition of a celebrity is that all the other n - 1 people know him/her but he/she does not know any of them.
+
+Now you want to find out who the celebrity is or verify that there is not one. The only thing you are allowed to do is to ask questions like: "Hi, A. Do you know B?" to get information of whether A knows B. You need to find out the celebrity (or verify there is not one) by asking as few questions as possible (in the asymptotic sense).
+
+You are given a helper function bool knows(a, b) which tells you whether A knows B. Implement a function int findCelebrity(n). There will be exactly one celebrity if he/she is in the party. Return the celebrity's label if there is a celebrity in the party. If there is no celebrity, return -1.
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/277.1.png" alt="277.1.png" /></p>
+
+<pre><code>Input: graph = [
+  [1,1,0],
+  [0,1,0],
+  [1,1,1]
+]
+Output: 1
+Explanation: There are three persons labeled with 0, 1 and 2. graph[i][j] = 1 means person i knows person j, otherwise graph[i][j] = 0 means person i does not know person j. The celebrity is the person labeled as 1 because both 0 and 2 know him but 1 does not know anybody.
+
+Example 2:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/277.2.png" alt="277.2.png" /></p>
+
+<pre><code>Input: graph = [
+  [1,0,1],
+  [1,1,0],
+  [0,1,1]
+]
+Output: -1
+Explanation: There is no celebrity.
+
+Note:
+
+The directed graph is represented as an adjacency matrix, which is an n x n matrix where a[i][j] = 1 means person i knows person j while a[i][j] = 0 means the contrary.
+Remember that you won't have direct access to the adjacency matrix.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># The knows API is already defined for you.</span>
+<span class="c1"># return a bool, whether a knows b</span>
+<span class="c1"># def knows(a: int, b: int) -&gt; bool: (given)</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">findCelebrity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># celebrity</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="n">i</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">knows</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span> <span class="n">x</span> <span class="o">=</span> <span class="n">i</span>  
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">knows</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span> <span class="c1"># x knows anyone?</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">knows</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span> <span class="c1"># does anyone doesn&#39;t knows x?</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n) where n is the number of people</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

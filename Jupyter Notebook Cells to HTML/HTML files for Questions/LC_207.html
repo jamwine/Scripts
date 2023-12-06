@@ -1,0 +1,76 @@
+<h2><a href="https://leetcode.com/problems/course-schedule/">207. Course Schedule</a></h2>
+
+<pre><code>There are a total of numCourses courses you have to take, labeled from 0 to numCourses-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+Example 1:
+
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0. So it is possible.
+Example 2:
+
+Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0, and to take course 0 you should
+             also have finished course 1. So it is impossible.
+
+Constraints:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+1 &lt;= numCourses &lt;= 10^5
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># For this question, vertices and indices are equivalent</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">canFinish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numCourses</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">prerequisites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">indegree</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">numCourses</span>
+
+        <span class="c1"># calculating the indegree for every course</span>
+        <span class="k">for</span> <span class="n">dependent_course</span><span class="p">,</span> <span class="n">independent_course</span> <span class="ow">in</span> <span class="n">prerequisites</span><span class="p">:</span>
+            <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># add the courses with no dependencies in the stack</span>
+        <span class="c1"># i.e. push vertices with 0 indegree to the stack</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indegree</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">indegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># pop course from stack and mark it as completed by incrementing the count</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># current represents completed independent course</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># course completion count, increment by 1 </span>
+
+            <span class="c1"># topological sort</span>
+            <span class="k">for</span> <span class="n">dependent_course</span><span class="p">,</span> <span class="n">independent_course</span> <span class="ow">in</span> <span class="n">prerequisites</span><span class="p">:</span>
+
+                <span class="c1"># if the current popped off course (independent course) is a prerequisite to some dependent course</span>
+                <span class="c1"># update the dependent courses (corresponding vertices) by removing the connection</span>
+                <span class="k">if</span> <span class="n">independent_course</span> <span class="o">==</span> <span class="n">current</span><span class="p">:</span>
+                    <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span> <span class="c1"># decrementing the count</span>
+
+                    <span class="c1"># Some dependent courses will become independent, check again for 0 indegrees</span>
+                    <span class="k">if</span> <span class="n">indegree</span><span class="p">[</span><span class="n">dependent_course</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dependent_course</span><span class="p">)</span>
+
+        <span class="c1"># fails if there&#39;s a cycle</span>
+        <span class="k">return</span> <span class="n">count</span> <span class="o">==</span> <span class="n">numCourses</span> 
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(|E| + |V|) where |V| is the number of courses, ∣E∣ is the number of dependencies </p>
+
+<p><strong>Space complexity</strong> : O(|E| + |V|) where |V| is the number of courses, ∣E∣ is the number of dependencies </p>

@@ -1,0 +1,66 @@
+<h2><a href="https://leetcode.com/problems/minimum-knight-moves/">1197. Minimum Knight Moves</a></h2>
+
+<pre><code>In an infinite chess board with coordinates from -infinity to +infinity, you have a knight at square [0, 0].
+
+A knight has 8 possible moves it can make, as illustrated below. Each move is two squares in a cardinal direction, then one square in an orthogonal direction.
+
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/688.png" alt="688.png"></p>
+
+<pre><code>Return the minimum number of steps needed to move the knight to the square [x, y]. It is guaranteed the answer exists.
+
+
+Example 1:
+Input: x = 2, y = 1
+Output: 1
+Explanation: [0, 0] → [2, 1]
+
+
+Example 2:
+Input: x = 5, y = 5
+Output: 4
+Explanation: [0, 0] → [2, 1] → [4, 2] → [3, 4] → [5, 5]
+
+
+Constraints:
+-300 &lt;= x, y &lt;= 300
+0 &lt;= |x| + |y| &lt;= 300
+</code></pre>
+
+<h3>Solution</h3>
+
+<ul>
+<li><p>From origin (0, 0), a knight has 8 possible moves: <strong>[(1, 2), (-1, 2), (1, -2), (-1, -2), (2, 1), (-2, 1), (2, -1), (-2, -1)]</strong></p></li>
+<li><p>We restrict the exploration to the <strong>first quadrant</strong> of the board where both x and y are positive: 
+[(1, 2), (2, 1)]</p></li>
+<li><p>For the target <strong>(x, y)<em>*, its horizontally *</em>(x, -y)<em>*, vertically *</em>(-x, y)<em>*, and diagonally *</em>(-x, -y)</strong> symmetric points share the same answer as the target point.</p></li>
+<li><p>Any target that is outside of the first quadrant, can be shifted to its symmetric point in the first quadrant by taking the <strong>absolute value<em>* of each coordinate, i.e. *</em>(|x|, |y|)</strong>.</p></li>
+<li><p>If destination is origin <strong>(0, 0)<em>*, there are no moves - *</em>return 0</strong></p></li>
+<li><p>The <strong>immediate neighborhood<em>* of the origin, refers to the points of where the sum of coordinates is less than or equal to 2, i.e. *</em>x + y &lt;= 2<em>*. In order to reach an immediate neighbor point from the origin, we need to do a bit of zigzag. For *</em>[(1, 1), (0, 2), (2, 0)]<em>*, it takes exactly *</em>2 steps<em>* to reach when starting from the origin - *</em>return 2</strong></p></li>
+</ul>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1197_1.png" alt="1197_1.png"></p>
+
+<ul>
+<li>The <strong>pattern keeps on repeating<em>*, the other positions can be determined using *</em>dfs on absolute values</strong>:
+<img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1197_2.jpeg" alt="1197_2.jpeg"></li>
+</ul>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minKnightMoves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="nd">@cache</span>
+        <span class="k">def</span> <span class="nf">dfs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span> <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">dfs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(∣xy∣), where (x,y) is the coordinate of the target.</p>
+
+<p><strong>Space complexity</strong> : O(∣xy∣), due to the application of memoization technique, we will keep all the intermediate results in the memory for reuse</p>

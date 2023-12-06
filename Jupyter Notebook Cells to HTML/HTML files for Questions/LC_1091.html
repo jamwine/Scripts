@@ -1,0 +1,80 @@
+<h2><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">1091. Shortest Path in Binary Matrix</a></h2>
+
+<pre><code>In an N by N square grid, each cell is either empty (0) or blocked (1).
+
+A clear path from top-left to bottom-right has length k if and only if it is composed of cells C_1, C_2, ..., C_k such that:
+
+Adjacent cells C_i and C_{i+1} are connected 8-directionally (ie., they are different and share an edge or corner)
+C_1 is at location (0, 0) (ie. has value grid[0][0])
+C_k is at location (N-1, N-1) (ie. has value grid[N-1][N-1])
+If C_i is located at (r, c), then grid[r][c] is empty (ie. grid[r][c] == 0).
+Return the length of the shortest such clear path from top-left to bottom-right.  If such a path does not exist, return -1.
+
+Example 1:
+
+Input: [[0,1],[1,0]]
+</code></pre>
+
+<p><img src='https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1091.1.png' alt='1091.1.png' width="15%"></p>
+
+<pre><code>Output: 2
+</code></pre>
+
+<p><img src='https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1091.2.png' alt='1091.2.png' width="15%"></p>
+
+<pre><code>Example 2:
+
+Input: [[0,0,0],[1,1,0],[1,1,0]]
+</code></pre>
+
+<p><img src='https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1091.3.png' alt='1091.3.png' width="15%"></p>
+
+<pre><code>Output: 4
+</code></pre>
+
+<p><img src='https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1091.4.png' alt='1091.4.png' width="15%"></p>
+
+<pre><code>Note:
+
+1 &lt;= grid.length == grid[0].length &lt;= 100
+grid[r][c] is 0 or 1
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">shortestPathBinaryMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="c1"># if source and destination are blocked</span>
+        <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># an item in the queue contains i, j, length</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># mark as blocked once visited</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">col</span> <span class="o">==</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">length</span>
+
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="n">x</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="n">y</span>
+
+                <span class="c1"># check if we aren&#39;t at the boundaries and have an unblocked cell</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">cols</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">r</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">length</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>         
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(M * N), where M and N are the rows and columns</p>
+
+<p><strong>Space complexity</strong> : O(M * N)</p>

@@ -1,0 +1,48 @@
+<h2><a href="https://leetcode.com/problems/two-sum/submissions/">01. Two Sum</a></h2>
+
+<pre><code>Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example 1:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+
+Example 2:
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+
+
+Example 3:
+Input: nums = [3,3], target = 6
+Output: [0,1]
+
+
+Constraints:
+2 &lt;= nums.length &lt;= 10^4
+-10^9 &lt;= nums[i] &lt;= 10^9
+-10^9 &lt;= target &lt;= 10^9
+Only one valid answer exists.
+
+
+Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">twoSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># {num, index}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+            <span class="n">complement</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">num</span>
+            <span class="k">if</span> <span class="n">complement</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="n">complement</span><span class="p">],</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>              
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

@@ -1,0 +1,85 @@
+<h2><a href="https://leetcode.com/problems/design-in-memory-file-system/">588. Design In-Memory File System</a></h2>
+
+<pre><code>Design an in-memory file system to simulate the following functions:
+
+ls: Given a path in string format. If it is a file path, return a list that only contains this file's name. If it is a directory path, return the list of file and directory names in this directory. Your output (file and directory names together) should in lexicographic order.
+
+mkdir: Given a directory path that does not exist, you should make a new directory according to the path. If the middle directories in the path don't exist either, you should create them as well. This function has void return type.
+
+addContentToFile: Given a file path and file content in string format. If the file doesn't exist, you need to create that file containing given content. If the file already exists, you need to append given content to original content. This function has void return type.
+
+readContentFromFile: Given a file path, return its content in string format.
+
+Example:
+
+Input: 
+["FileSystem","ls","mkdir","addContentToFile","ls","readContentFromFile"]
+[[],["/"],["/a/b/c"],["/a/b/c/d","hello"],["/"],["/a/b/c/d"]]
+
+Output:
+[null,[],null,null,["a"],"hello"]
+
+Explanation:
+</code></pre>
+
+<pre><code>Note:
+
+You can assume all file or directory paths are absolute paths which begin with / and do not end with / except that the path is just "/".
+You can assume that all operations will be passed valid parameters and users will not attempt to retrieve file content or list a directory or file that does not exist.
+You can assume that all directory names and file names only contain lower-case letters, and same names won't exist in the same directory.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">TrieNode</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">=</span><span class="n">defaultdict</span><span class="p">(</span><span class="n">TrieNode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isFile</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">FileSystem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">=</span><span class="n">TrieNode</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">node</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="n">path_list</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">path_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">directory</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">ls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>            
+        <span class="k">if</span> <span class="n">path</span><span class="o">==</span><span class="s2">&quot;/&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">node</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">isFile</span><span class="p">:</span>
+            <span class="n">path_list</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">path_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+
+    <span class="k">def</span> <span class="nf">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>        
+
+    <span class="k">def</span> <span class="nf">addContentToFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">content</span><span class="o">+=</span><span class="n">content</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">isFile</span><span class="o">=</span><span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">readContentFromFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="c1"># Your FileSystem object will be instantiated and called as such:</span>
+<span class="c1"># obj = FileSystem()</span>
+<span class="c1"># param_1 = obj.ls(path)</span>
+<span class="c1"># obj.mkdir(path)</span>
+<span class="c1"># obj.addContentToFile(filePath,content)</span>
+<span class="c1"># param_4 = obj.readContentFromFile(filePath)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : The time complexity O(m+n+klog(k)). Here, m refers to the length of the input string. We need to scan the input string once to split it and determine the various levels. n refers to the depth of the last directory level in the given input for ls. This factor is taken because we need to enter n levels of the tree structure to reach the last level. k refers to the number of entries(files+subdirectories) in the last level directory(in the current input). We need to sort these names giving a factor of klog(k).</p>
+
+<p><strong>Space complexity</strong> : O(m) for storing filesystem in trie</p>

@@ -1,0 +1,63 @@
+<h2><a href="https://leetcode.com/problems/valid-parentheses/">20. Valid Parentheses</a></h2>
+
+<pre><code>Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+
+Input: "()"
+Output: true
+
+Example 2:
+
+Input: "()[]{}"
+Output: true
+
+Example 3:
+
+Input: "(]"
+Output: false
+
+Example 4:
+
+Input: "([)]"
+Output: false
+
+Example 5:
+
+Input: "{[]}"
+Output: true
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;}&#39;</span><span class="p">:</span><span class="s1">&#39;{&#39;</span><span class="p">,</span><span class="s1">&#39;]&#39;</span><span class="p">:</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="s1">&#39;)&#39;</span><span class="p">:</span><span class="s1">&#39;(&#39;</span><span class="p">}</span> <span class="c1"># {closing_parenthesis : opening_parenthesis}</span>
+
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+
+            <span class="c1"># Add opening parentheses to stack</span>
+            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+            <span class="c1"># Closing parentheses -&gt; pop from stack</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stack_top</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="n">stack</span> <span class="k">else</span> <span class="s1">&#39;#&#39;</span>
+                <span class="k">if</span> <span class="n">stack_top</span> <span class="o">!=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">):</span> <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># If stack is empty -&gt; we have popped all parenthesis successfully</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">stack</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

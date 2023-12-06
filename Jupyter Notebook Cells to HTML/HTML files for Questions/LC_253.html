@@ -1,0 +1,57 @@
+<h2><a href="https://leetcode.com/problems/meeting-rooms-ii/">253. Meeting Rooms II</a></h2>
+
+<pre><code>Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si &lt; ei), find the minimum number of conference rooms required.
+
+Example 1:
+
+Input: [[0, 30],[5, 10],[15, 20]]
+Output: 2
+
+Example 2:
+
+Input: [[7,10],[2,4]]
+Output: 1
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minMeetingRooms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intervals</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">rooms</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># separate and sort the start and end times individually</span>
+
+        <span class="c1"># [[0,30],[5,10],[15,20]] -&gt; [0,5,15]</span>
+        <span class="n">startTimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">])</span>
+        <span class="c1"># [[0,30],[5,10],[15,20]] -&gt; [10,20,30]</span>
+        <span class="n">endTimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">])</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
+
+        <span class="c1"># initialize start and end pointers</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+
+        <span class="c1"># loop until all the meetings are processed</span>
+        <span class="k">while</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+
+            <span class="c1"># If a meeting ends before the new one starts, decrease room by one</span>
+            <span class="k">if</span> <span class="n">startTimes</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">endTimes</span><span class="p">[</span><span class="n">end</span><span class="p">]:</span>
+                <span class="c1"># free up room and increment end</span>
+                <span class="n">rooms</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># For every new meeting, we need a new room</span>
+            <span class="n">rooms</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">rooms</span>   
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N log N), where N is the total number of meetings</p>
+
+<p><strong>Space complexity</strong> : O(N), to store start time and end time</p>

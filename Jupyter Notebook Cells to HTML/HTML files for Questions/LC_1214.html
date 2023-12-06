@@ -1,0 +1,67 @@
+<h2><a href="https://leetcode.com/problems/two-sum-bsts/">1214. Two Sum BSTs</a></h2>
+
+<pre><code>Given two binary search trees, return True if and only if there is a node in the first tree and a node in the second tree whose values sum up to a given integer target.
+
+Example 1:
+</code></pre>
+
+<p><img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1214.0.png" alt="1214.0.png">
+<img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1214.1.png" alt="1214.1.png"></p>
+
+<pre><code>Input: root1 = [2,1,4], root2 = [1,0,3], target = 5
+Output: true
+Explanation: 2 and 3 sum up to 5.
+
+Example 2:
+</code></pre>
+
+<p><img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1214.2.png" alt="1214.2.png">
+<img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1214.3.png" alt="1214.3.png"></p>
+
+<pre><code>Input: root1 = [0,-10,10], root2 = [5,1,7,0,2], target = 18
+Output: false
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">twoSumBSTs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root1</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">root2</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">hs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">def</span> <span class="nf">inorderBST1</span><span class="p">(</span><span class="n">root1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">root1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> 
+
+            <span class="n">inorderBST1</span><span class="p">(</span><span class="n">root1</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="n">hs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">root1</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">inorderBST1</span><span class="p">(</span><span class="n">root1</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">hs</span>
+
+        <span class="k">def</span> <span class="nf">inorderBST2</span><span class="p">(</span><span class="n">root2</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">res</span>
+            <span class="k">if</span> <span class="n">root2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> 
+
+            <span class="n">inorderBST2</span><span class="p">(</span><span class="n">root2</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">root2</span><span class="o">.</span><span class="n">val</span> <span class="ow">in</span> <span class="n">hs</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">inorderBST2</span><span class="p">(</span><span class="n">root2</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+        <span class="n">hs</span> <span class="o">=</span> <span class="n">inorderBST1</span><span class="p">(</span><span class="n">root1</span><span class="p">)</span>
+        <span class="n">inorderBST2</span><span class="p">(</span><span class="n">root2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N1 + N2) where N1 and N2 are the number of nodes in the first and second tree respectively.</p>
+
+<p><strong>Space complexity</strong> : O(N1), keep the hashset. O(N1 + N2) recursion stack. O(N1 + N2).</p>

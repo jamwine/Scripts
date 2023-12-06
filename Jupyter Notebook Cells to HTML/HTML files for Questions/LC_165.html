@@ -1,0 +1,111 @@
+<h2><a href="https://leetcode.com/problems/compare-version-numbers/">165. Compare Version Numbers</a></h2>
+
+<pre><code>Compare two version numbers version1 and version2.
+If version1 &gt; version2 return 1; if version1 &lt; version2 return -1;otherwise return 0.
+
+You may assume that the version strings are non-empty and contain only digits and the . character.
+
+The . character does not represent a decimal point and is used to separate number sequences.
+
+For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.
+
+You may assume the default revision number for each level of a version number to be 0. For example, version number 3.4 has a revision number of 3 and 4 for its first and second level revision number. Its third and fourth level revision number are both 0.
+
+Example 1:
+Input: version1 = "0.1", version2 = "1.1"
+Output: -1
+
+Example 2:
+Input: version1 = "1.0.1", version2 = "1"
+Output: 1
+
+Example 3:
+Input: version1 = "7.5.2.4", version2 = "7.5.3"
+Output: -1
+
+Example 4:
+Input: version1 = "1.01", version2 = "1.001"
+Output: 0
+Explanation: Ignoring leading zeroes, both “01” and “001" represent the same number “1”
+
+Example 5:
+Input: version1 = "1.0", version2 = "1.0.0"
+Output: 0
+Explanation: The first version number does not have a third level revision number, which means its third level revision number is default to "0"
+
+Note:
+1) Version strings are composed of numeric strings separated by dots . and this numeric strings may have leading zeroes.
+2) Version strings do not start or end with dots, and they will not be two consecutive dots.
+</code></pre>
+
+<h3>Solution 1</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compareVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">version1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version1</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span>
+        <span class="n">version2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">version2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span>
+
+        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">v1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">version1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">version2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">version1</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">version2</span><span class="p">[</span><span class="n">v2</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">version1</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">version2</span><span class="p">[</span><span class="n">v2</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="mi">1</span>
+            <span class="n">v1</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">v2</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">v1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">version1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">version1</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">1</span>
+            <span class="n">v1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">v2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">version2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">version2</span><span class="p">[</span><span class="n">v2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">v2</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">0</span>    
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n+m+max(n,m)), where n and m represents lengths of version1 and version2 respectively.</p>
+
+<p><strong>Space complexity</strong> : O(n+m), to store two arrays</p>
+
+<h3>Solution 2: Using two Pointers, One Pass</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compareVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">version1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">version2</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">getChunk</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">p_end</span> <span class="o">=</span> <span class="n">p</span>
+
+                <span class="c1"># setting pointers to start and end of chunk</span>
+                <span class="k">while</span> <span class="n">p_end</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">version</span><span class="p">[</span><span class="n">p_end</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+                    <span class="n">p_end</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># retrieve chunk </span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">version</span><span class="p">[</span><span class="n">p</span><span class="p">:</span><span class="n">p_end</span><span class="p">])</span> 
+                <span class="n">p</span> <span class="o">=</span> <span class="n">p_end</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">p</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">p</span>
+
+        <span class="c1"># Main function</span>
+        <span class="k">while</span> <span class="n">p1</span> <span class="o">&lt;</span> <span class="n">n1</span> <span class="ow">or</span> <span class="n">p2</span> <span class="o">&lt;</span> <span class="n">n2</span><span class="p">:</span>
+            <span class="n">chunk1</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">getChunk</span><span class="p">(</span><span class="n">version1</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">n1</span><span class="p">)</span>
+            <span class="n">chunk2</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">getChunk</span><span class="p">(</span><span class="n">version2</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">chunk1</span> <span class="o">!=</span> <span class="n">chunk2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">chunk1</span> <span class="o">&gt;</span> <span class="n">chunk2</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="mi">0</span>                    
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(max(n,m)), where n and m represents lengths of version1 and version2 respectively.</p>
+
+<p><strong>Space complexity</strong> : O(max(n,m)) </p>

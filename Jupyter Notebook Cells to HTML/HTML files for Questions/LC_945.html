@@ -1,0 +1,46 @@
+<h2>945. Minimum Increment to Make Array Unique</h2>
+
+<pre><code>Given an array of integers A, a move consists of choosing any A[i], and incrementing it by 1.
+
+Return the least number of moves to make every value in A unique.
+
+Example 1:
+Input: [1,2,2]
+Output: 1
+Explanation:  After 1 move, the array could be [1, 2, 3].
+
+Example 2:
+Input: [3,2,1,2,1,7]
+Output: 6
+Explanation:  After 6 moves, the array could be [3, 4, 1, 2, 5, 7].
+It can be shown with 5 or less moves that it is impossible for the array to have all unique values.
+
+Note:
+0 &lt;= A.length &lt;= 40000
+0 &lt;= A[i] &lt; 40000
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minIncrementForUnique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">A</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">A</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="n">maximum</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">maximum</span> <span class="o">-</span> <span class="n">n</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">maximum</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N log N) due to sorting, where N is the length of array.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

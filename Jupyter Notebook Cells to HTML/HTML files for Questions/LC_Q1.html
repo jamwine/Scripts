@@ -1,0 +1,48 @@
+<h2>Largest Range (Extra Question)</h2>
+
+<pre><code>Write a function that takes in an array of integers and returns an array of length 2 representing the largest range of integers contained in that array.
+
+The first number in the output array should be the first number in the range, while the second number should be the last number in the range.
+
+A range of numbers is defined as a set of numbers that come right after each other in the set of real integers. For instance, the output array [2, 6] represents the range (2, 3, 4, 5, 6}, which is a range of length 5. Note that numbers don't need to be sorted or adjacent in the input array in order to form a range.
+
+You can assume that there will only be one largest range.
+
+Example 1:
+Input: array = [1,11,3,0,15,5,2,4,10,7,12,16]
+Output: [0, 7]
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span> <span class="nf">largestRange</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="n">bestRange</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">longestLength</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nums</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span><span class="p">:</span> <span class="kc">True</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">array</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">array</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nums</span> <span class="p">[</span><span class="n">num</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="n">nums</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">currentLength</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">num</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">left</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">currentLength</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">left</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">right</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">currentLength</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">currentLength</span> <span class="o">&gt;</span> <span class="n">longestLength</span><span class="p">:</span>
+            <span class="n">longestLength</span> <span class="o">=</span> <span class="n">currentLength</span>
+            <span class="n">bestRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">bestRange</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N are the total elements in an array</p>
+
+<p><strong>Space complexity</strong> : O(N)</p>

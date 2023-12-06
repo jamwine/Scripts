@@ -1,0 +1,68 @@
+<h2><a href="https://leetcode.com/problems/design-hit-counter/">362. Design Hit Counter</a></h2>
+
+<pre><code>Design a hit counter which counts the number of hits received in the past 5 minutes (i.e., the past 300 seconds).
+
+Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). Several hits may arrive roughly at the same time.
+
+Implement the HitCounter class:
+
+HitCounter() Initializes the object of the hit counter system.
+void hit(int timestamp) Records a hit that happened at timestamp (in seconds). Several hits may happen at the same timestamp.
+int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp (i.e., the past 300 seconds).
+
+
+Example 1:
+
+Input
+["HitCounter", "hit", "hit", "hit", "getHits", "hit", "getHits", "getHits"]
+[[], [1], [2], [3], [4], [300], [300], [301]]
+Output
+[null, null, null, null, 3, null, 4, 3]
+
+Explanation
+HitCounter hitCounter = new HitCounter();
+hitCounter.hit(1);       // hit at timestamp 1.
+hitCounter.hit(2);       // hit at timestamp 2.
+hitCounter.hit(3);       // hit at timestamp 3.
+hitCounter.getHits(4);   // get hits at timestamp 4, return 3.
+hitCounter.hit(300);     // hit at timestamp 300.
+hitCounter.getHits(300); // get hits at timestamp 300, return 4.
+hitCounter.getHits(301); // get hits at timestamp 301, return 3.
+
+
+Constraints:
+1 &lt;= timestamp &lt;= 2 * 109
+All the calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing).
+At most 300 calls will be made to hit and getHits.
+
+
+Follow up: What if the number of hits per second could be huge? Does your design scale?
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">HitCounter</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deque</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">hit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getHits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="mi">300</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">deque</span> <span class="ow">and</span> <span class="n">timestamp</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">deque</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">seconds</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deque</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deque</span><span class="p">)</span>
+
+<span class="c1"># Your HitCounter object will be instantiated and called as such:</span>
+<span class="c1"># obj = HitCounter()</span>
+<span class="c1"># obj.hit(timestamp)</span>
+<span class="c1"># param_2 = obj.getHits(timestamp)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1), for hit() and gethits()</p>
+
+<p><strong>Space complexity</strong> : O(N)</p>

@@ -1,0 +1,70 @@
+<h2>1325. Delete Leaves With a Given Value</h2>
+
+<pre><code>Given a binary tree root and an integer target, delete all the leaf nodes with value target.
+
+Note that once you delete a leaf node with value target, if it's parent node becomes a leaf node and has the value target, it should also be deleted (you need to continue doing that until you can't).
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1325.1.png" alt="1325.1.png" /></p>
+
+<pre><code>Input: root = [1,2,3,2,null,2,4], target = 2
+Output: [1,null,3,null,4]
+Explanation: Leaf nodes in green with value (target = 2) are removed (Picture in left). 
+After removing, new nodes become leaf nodes with value (target = 2) (Picture in center).
+
+Example 2:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1325.2.png" alt="1325.2.png" /></p>
+
+<pre><code>Input: root = [1,3,3,3,2], target = 3
+Output: [1,3,null,null,2]
+
+Example 3:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1325.3.png" alt="1325.3.png" /></p>
+
+<pre><code>Input: root = [1,2,null,2,null,2], target = 2
+Output: [1]
+Explanation: Leaf nodes in green with value (target = 2) are removed at each step.
+
+Example 4:
+Input: root = [1,1,1], target = 1
+Output: []
+
+Example 5:
+Input: root = [1,2,3], target = 1
+Output: [1,2,3]
+
+Constraints:
+1 &lt;= target &lt;= 1000
+The given binary tree will have between 1 and 3000 nodes.
+Each node's value is between [1, 1000].
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">removeLeafNodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TreeNode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">root</span><span class="p">:</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">removeLeafNodes</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">removeLeafNodes</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">val</span> <span class="o">!=</span> <span class="n">target</span> <span class="ow">or</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="ow">or</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">root</span>     
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), to visit each node.</p>
+
+<p><strong>Space complexity</strong> : O(H), due to recursion stack</p>

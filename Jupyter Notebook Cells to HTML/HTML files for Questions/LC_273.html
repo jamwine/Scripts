@@ -1,0 +1,85 @@
+<h2><a href="https://leetcode.com/problems/integer-to-english-words/">273. Integer to English Words</a></h2>
+
+<pre><code>Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 2^(31) - 1.
+
+Example 1:
+
+Input: 123
+Output: "One Hundred Twenty Three"
+
+Example 2: 
+
+Input: 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+
+Example 3: 
+
+Input: 1234567
+Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+
+Example 4: 
+
+Input: 1234567891
+Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">numberToWords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;Zero&quot;</span>
+
+        <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;One&quot;</span><span class="p">,</span><span class="s2">&quot;Two&quot;</span><span class="p">,</span><span class="s2">&quot;Three&quot;</span><span class="p">,</span><span class="s2">&quot;Four&quot;</span><span class="p">,</span><span class="s2">&quot;Five&quot;</span><span class="p">,</span><span class="s2">&quot;Six&quot;</span><span class="p">,</span><span class="s2">&quot;Seven&quot;</span><span class="p">,</span><span class="s2">&quot;Eight&quot;</span><span class="p">,</span><span class="s2">&quot;Nine&quot;</span><span class="p">]</span>
+        <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ten&quot;</span><span class="p">,</span><span class="s2">&quot;Eleven&quot;</span><span class="p">,</span><span class="s2">&quot;Twelve&quot;</span><span class="p">,</span><span class="s2">&quot;Thirteen&quot;</span><span class="p">,</span><span class="s2">&quot;Fourteen&quot;</span><span class="p">,</span><span class="s2">&quot;Fifteen&quot;</span><span class="p">,</span>\
+           <span class="s2">&quot;Sixteen&quot;</span><span class="p">,</span><span class="s2">&quot;Seventeen&quot;</span><span class="p">,</span><span class="s2">&quot;Eighteen&quot;</span><span class="p">,</span><span class="s2">&quot;Nineteen&quot;</span><span class="p">]</span>
+        <span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Twenty&quot;</span><span class="p">,</span><span class="s2">&quot;Thirty&quot;</span><span class="p">,</span><span class="s2">&quot;Forty&quot;</span><span class="p">,</span><span class="s2">&quot;Fifty&quot;</span><span class="p">,</span><span class="s2">&quot;Sixty&quot;</span><span class="p">,</span><span class="s2">&quot;Seventy&quot;</span><span class="p">,</span><span class="s2">&quot;Eighty&quot;</span><span class="p">,</span><span class="s2">&quot;Ninety&quot;</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">ones</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">num</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">tens</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">):</span> <span class="k">return</span> <span class="n">ones</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;=</span><span class="mi">10</span> <span class="ow">and</span> <span class="n">num</span><span class="o">&lt;=</span><span class="mi">19</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">num</span><span class="o">%</span><span class="mi">10</span><span class="p">]</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;=</span><span class="mi">20</span> <span class="ow">and</span> <span class="n">num</span><span class="o">&lt;=</span><span class="mi">99</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">z</span><span class="p">[(</span><span class="n">num</span><span class="o">//</span><span class="mi">10</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span> <span class="n">ones</span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">hundreds</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">):</span> <span class="k">return</span> <span class="n">tens</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">ones</span><span class="p">(</span><span class="n">num</span><span class="o">//</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; Hundred &quot;</span><span class="o">+</span> <span class="n">tens</span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">100</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">thousands</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&lt;</span><span class="mi">1000</span><span class="p">):</span> <span class="k">return</span> <span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="o">//</span><span class="mi">1000</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; Thousand &quot;</span><span class="o">+</span><span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">1000</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">millions</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&lt;</span><span class="mi">1000000</span><span class="p">):</span> <span class="k">return</span> <span class="n">thousands</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="o">//</span><span class="mi">1000000</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; Million &quot;</span><span class="o">+</span><span class="n">thousands</span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">1000000</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">billions</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&lt;</span><span class="mi">1000000000</span><span class="p">):</span> <span class="k">return</span> <span class="n">millions</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="o">//</span><span class="mi">1000000000</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; Billion &quot;</span><span class="o">+</span><span class="n">millions</span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">1000000000</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">length</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">length</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">hundreds</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">length</span><span class="o">&lt;=</span><span class="mi">6</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">thousands</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">length</span><span class="o">&lt;=</span><span class="mi">9</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">millions</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">billions</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N) Intuitively the output is proportional to <code>N</code> digits in the input. In case of finite , it becomes O(1).</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

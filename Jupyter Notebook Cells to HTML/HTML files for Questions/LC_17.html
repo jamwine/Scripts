@@ -1,0 +1,57 @@
+<h2><a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">17. Letter Combinations of a Phone Number</a></h2>
+
+<pre><code>Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/17.png" alt="17.png" /></p>
+
+<pre><code>Example 1:
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+Example 2:
+Input: digits = ""
+Output: []
+
+Example 3:
+Input: digits = "2"
+Output: ["a","b","c"]
+
+Constraints:
+0 &lt;= digits.length &lt;= 4
+digits[i] is a digit in the range ['2', '9'].
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">letterCombinations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">digits</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s2">&quot;abc&quot;</span><span class="p">,</span> <span class="s2">&quot;def&quot;</span><span class="p">,</span> <span class="s2">&quot;ghi&quot;</span><span class="p">,</span> <span class="s2">&quot;jkl&quot;</span><span class="p">,</span> <span class="s2">&quot;mno&quot;</span><span class="p">,</span> <span class="s2">&quot;pqrs&quot;</span><span class="p">,</span> <span class="s2">&quot;tuv&quot;</span><span class="p">,</span> <span class="s2">&quot;wxyz&quot;</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">letterCombinationsRecursive</span><span class="p">(</span><span class="n">currentCombination</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+            <span class="c1">#base case, stop when we have correct combination</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">digits</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentCombination</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="c1">#keep processing</span>
+            <span class="n">letters</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">digits</span><span class="p">[</span><span class="n">index</span><span class="p">])]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)):</span>
+                <span class="c1">#hold the letters of current digit we are on and pass them one by one using recusion</span>
+                <span class="n">letterCombinationsRecursive</span><span class="p">(</span><span class="n">currentCombination</span> <span class="o">+</span> <span class="n">letters</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">letterCombinationsRecursive</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(3^N × 4^M) where N is the number of digits in the input that maps to 3 letters (e.g. 2, 3, 4, 5, 6, 8) and M is the number of digits in the input that maps to 4 letters (e.g. 7, 9), and N+M is the total number digits in the input.</p>
+
+<p><strong>Space complexity</strong> : O(3^N × 4^M)</p>

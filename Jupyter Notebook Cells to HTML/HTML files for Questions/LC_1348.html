@@ -1,0 +1,83 @@
+<h2>1348. Tweet Counts Per Frequency</h2>
+
+<pre><code>Implement the class TweetCounts that supports two methods:
+
+1. recordTweet(string tweetName, int time)
+
+Stores the tweetName at the recorded time (in seconds).
+2. getTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime)
+
+Returns the total number of occurrences for the given tweetName per minute, hour, or day (depending on freq) starting from the startTime (in seconds) and ending at the endTime (in seconds).
+
+freq is always minute, hour or day, representing the time interval to get the total number of occurrences for the given tweetName.
+
+The first time interval always starts from the startTime, so the time intervals are [startTime, startTime + delta*1&gt;,  [startTime + delta*1, startTime + delta*2&gt;, [startTime + delta*2, startTime + delta*3&gt;, ... , [startTime + delta*i, min(startTime + delta*(i+1), endTime + 1)&gt; for some non-negative number i and delta (which depends on freq).  
+
+
+Example:
+
+Input
+["TweetCounts","recordTweet","recordTweet","recordTweet","getTweetCountsPerFrequency","getTweetCountsPerFrequency","recordTweet","getTweetCountsPerFrequency"]
+[[],["tweet3",0],["tweet3",60],["tweet3",10],["minute","tweet3",0,59],["minute","tweet3",0,60],["tweet3",120],["hour","tweet3",0,210]]
+
+Output
+[null,null,null,null,[2],[2,1],null,[4]]
+
+Explanation
+TweetCounts tweetCounts = new TweetCounts();
+tweetCounts.recordTweet("tweet3", 0);
+tweetCounts.recordTweet("tweet3", 60);
+tweetCounts.recordTweet("tweet3", 10);                             // All tweets correspond to "tweet3" with recorded times at 0, 10 and 60.
+tweetCounts.getTweetCountsPerFrequency("minute", "tweet3", 0, 59); // return [2]. The frequency is per minute (60 seconds), so there is one interval of time: 1) [0, 60&gt; - &gt; 2 tweets.
+tweetCounts.getTweetCountsPerFrequency("minute", "tweet3", 0, 60); // return [2, 1]. The frequency is per minute (60 seconds), so there are two intervals of time: 1) [0, 60&gt; - &gt; 2 tweets, and 2) [60,61&gt; - &gt; 1 tweet.
+tweetCounts.recordTweet("tweet3", 120);                            // All tweets correspond to "tweet3" with recorded times at 0, 10, 60 and 120.
+tweetCounts.getTweetCountsPerFrequency("hour", "tweet3", 0, 210);  // return [4]. The frequency is per hour (3600 seconds), so there is one interval of time: 1) [0, 211&gt; - &gt; 4 tweets.
+
+
+Constraints:
+There will be at most 10000 operations considering both recordTweet and getTweetCountsPerFrequency.
+0 &lt;= time, startTime, endTime &lt;= 10^9
+0 &lt;= endTime - startTime &lt;= 10^4
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">TweetCounts</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tweets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> 
+
+    <span class="k">def</span> <span class="nf">recordTweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tweetName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tweets</span><span class="p">[</span><span class="n">tweetName</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getTweetCountsPerFrequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tweetName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">startTime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">endTime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tweetName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweets</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="k">if</span> <span class="n">freq</span> <span class="o">==</span> <span class="s2">&quot;hour&quot;</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">*=</span> <span class="mi">60</span>
+        <span class="k">elif</span> <span class="n">freq</span> <span class="o">==</span> <span class="s2">&quot;day&quot;</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)</span>
+
+        <span class="n">tweet_times</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tweets</span><span class="p">[</span><span class="n">tweetName</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(((</span><span class="n">endTime</span><span class="o">-</span><span class="n">startTime</span><span class="p">)</span><span class="o">//</span><span class="n">delta</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">tweet_times</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="n">startTime</span> <span class="o">&lt;=</span> <span class="n">time</span> <span class="o">&lt;=</span> <span class="n">endTime</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">-</span><span class="n">startTime</span><span class="p">)</span><span class="o">//</span><span class="n">delta</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Your TweetCounts object will be instantiated and called as such:</span>
+<span class="c1"># obj = TweetCounts()</span>
+<span class="c1"># obj.recordTweet(tweetName,time)</span>
+<span class="c1"># param_2 = obj.getTweetCountsPerFrequency(freq,tweetName,startTime,endTime)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1) for recordTweet() and O(M) for getTweetCountsPerFrequency() to fetch tweets having M times. </p>
+
+<p><strong>Space complexity</strong> : O(NM), for storing N tweets in a dictionary.</p>

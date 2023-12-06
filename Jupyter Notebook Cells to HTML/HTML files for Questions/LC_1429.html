@@ -1,0 +1,101 @@
+<h2><a href="https://leetcode.com/problems/first-unique-number/">1429. First Unique Number</a></h2>
+
+<pre><code>You have a queue of integers, you need to retrieve the first unique integer in the queue.
+
+Implement the FirstUnique class:
+
+FirstUnique(int[] nums) Initializes the object with the numbers in the queue.
+int showFirstUnique() returns the value of the first unique integer of the queue, and returns -1 if there is no such integer.
+void add(int value) insert value to the queue.
+
+
+Example 1:
+Input: 
+["FirstUnique","showFirstUnique","add","showFirstUnique","add","showFirstUnique","add","showFirstUnique"]
+[[[2,3,5]],[],[5],[],[2],[],[3],[]]
+Output: 
+[null,2,null,2,null,3,null,-1]
+Explanation: 
+FirstUnique firstUnique = new FirstUnique([2,3,5]);
+firstUnique.showFirstUnique(); // return 2
+firstUnique.add(5);            // the queue is now [2,3,5,5]
+firstUnique.showFirstUnique(); // return 2
+firstUnique.add(2);            // the queue is now [2,3,5,5,2]
+firstUnique.showFirstUnique(); // return 3
+firstUnique.add(3);            // the queue is now [2,3,5,5,2,3]
+firstUnique.showFirstUnique(); // return -1
+
+
+Example 2:
+Input: 
+["FirstUnique","showFirstUnique","add","add","add","add","add","showFirstUnique"]
+[[[7,7,7,7,7,7]],[],[7],[3],[3],[7],[17],[]]
+Output: 
+[null,-1,null,null,null,null,null,17]
+Explanation: 
+FirstUnique firstUnique = new FirstUnique([7,7,7,7,7,7]);
+firstUnique.showFirstUnique(); // return -1
+firstUnique.add(7);            // the queue is now [7,7,7,7,7,7,7]
+firstUnique.add(3);            // the queue is now [7,7,7,7,7,7,7,3]
+firstUnique.add(3);            // the queue is now [7,7,7,7,7,7,7,3,3]
+firstUnique.add(7);            // the queue is now [7,7,7,7,7,7,7,3,3,7]
+firstUnique.add(17);           // the queue is now [7,7,7,7,7,7,7,3,3,7,17]
+firstUnique.showFirstUnique(); // return 17
+
+
+Example 3:
+Input: 
+["FirstUnique","showFirstUnique","add","showFirstUnique"]
+[[[809]],[],[809],[]]
+Output: 
+[null,809,null,-1]
+Explanation: 
+FirstUnique firstUnique = new FirstUnique([809]);
+firstUnique.showFirstUnique(); // return 809
+firstUnique.add(809);          // the queue is now [809,809]
+firstUnique.showFirstUnique(); // return -1
+
+
+Constraints:
+1 &lt;= nums.length &lt;= 10^5
+1 &lt;= nums[i] &lt;= 10^8
+1 &lt;= value &lt;= 10^8
+At most 50000 calls will be made to showFirstUnique and add.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="k">class</span> <span class="nc">FirstUnique</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>        
+
+    <span class="k">def</span> <span class="nf">showFirstUnique</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># Your FirstUnique object will be instantiated and called as such:</span>
+<span class="c1"># obj = FirstUnique(nums)</span>
+<span class="c1"># param_1 = obj.showFirstUnique()</span>
+<span class="c1"># obj.add(value)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(K) for constructor as K numbers are passed from the queue, O(1) for add(), O(1) for showFirstUnique()</p>
+
+<p><strong>Space complexity</strong> : O(N) for storing all numbers in dictionary or set.</p>

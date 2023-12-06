@@ -1,0 +1,94 @@
+<h2><a href="https://leetcode.com/problems/longest-absolute-file-path/">388. Longest Absolute File Path</a></h2>
+
+<pre><code>Suppose we have a file system that stores both files and directories. An example of one system is represented in the following picture:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/388_1.jpg" alt="388_1.jpg"></p>
+
+<pre><code>
+Here, we have dir as the only directory in the root. dir contains two subdirectories, subdir1 and subdir2. subdir1 contains a file file1.ext and subdirectory subsubdir1. subdir2 contains a subdirectory subsubdir2, which contains a file file2.ext.
+
+In text form, it looks like this (with ⟶ representing the tab character):
+
+
+dir
+⟶ subdir1
+⟶ ⟶ file1.ext
+⟶ ⟶ subsubdir1
+⟶ subdir2
+⟶ ⟶ subsubdir2
+⟶ ⟶ ⟶ file2.ext
+
+
+If we were to write this representation in code, it will look like this: "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext". Note that the '\n' and '\t' are the new-line and tab characters.
+
+Every file and directory has a unique absolute path in the file system, which is the order of directories that must be opened to reach the file/directory itself, all concatenated by '/'s. Using the above example, the absolute path to file2.ext is "dir/subdir2/subsubdir2/file2.ext". Each directory name consists of letters, digits, and/or spaces. Each file name is of the form name.extension, where name and extension consist of letters, digits, and/or spaces.
+
+Given a string input representing the file system in the explained format, return the length of the longest absolute path to a file in the abstracted file system. If there is no file in the system, return 0.
+
+Note that the testcases are generated such that the file system is valid and no file or directory name has length 0.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/388_2.jpg" alt="388_2.jpg"></p>
+
+<pre><code>Input: input = "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+Output: 20
+Explanation: We have only one file, and the absolute path is "dir/subdir2/file.ext" of length 20.
+
+
+Example 2:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/388_3.jpg" alt="388_3.jpg"></p>
+
+<pre><code>Input: input = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+Output: 32
+Explanation: We have two files:
+"dir/subdir1/file1.ext" of length 21
+"dir/subdir2/subsubdir2/file2.ext" of length 32.
+We return 32 since it is the longest absolute path to a file.
+
+
+Example 3:
+Input: input = "a"
+Output: 0
+Explanation: We do not have any files, just a single directory named "a".
+
+
+Constraints:
+1 &lt;= input.length &lt;= 104
+input may contain lowercase or uppercase English letters, a new line character '\n', a tab character '\t', a dot '.', a space ' ', and digits.
+All file and directory names have positive length.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">lengthLongestPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">max_len</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="n">prev_level</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># {level:length}</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span> 
+            <span class="n">level</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Remove the keys (levels) from dictionary</span>
+            <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="n">prev_level</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">prev_level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="n">d</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+            <span class="n">prev_level</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="k">return</span> <span class="n">max_len</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is the number of input characters </p>
+
+<p><strong>Space complexity</strong> : O(N), for maintaining a list storing length</p>

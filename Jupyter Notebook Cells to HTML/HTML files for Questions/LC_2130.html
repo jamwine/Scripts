@@ -1,0 +1,104 @@
+<h2><a href="https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/">2130. Maximum Twin Sum of a Linked List</a></h2>
+
+<pre><code>In a linked list of size n, where n is even, the ith node (0-indexed) of the linked list is known as the twin of the (n-1-i)th node, if 0 &lt;= i &lt;= (n / 2) - 1.
+
+For example, if n = 4, then node 0 is the twin of node 3, and node 1 is the twin of node 2. These are the only nodes with twins for n = 4.
+The twin sum is defined as the sum of a node and its twin.
+
+Given the head of a linked list with even length, return the maximum twin sum of the linked list.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/2130_1.png" alt="2130_1.png"></p>
+
+<pre><code>Input: head = [5,4,2,1]
+Output: 6
+Explanation:
+Nodes 0 and 1 are the twins of nodes 3 and 2, respectively. All have twin sum = 6.
+There are no other nodes with twins in the linked list.
+Thus, the maximum twin sum of the linked list is 6. 
+
+
+Example 2:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/2130_2.png" alt="2130_2.png"></p>
+
+<pre><code>Input: head = [4,2,2,3]
+Output: 7
+Explanation:
+The nodes with twins present in this linked list are:
+- Node 0 is the twin of node 3 having a twin sum of 4 + 3 = 7.
+- Node 1 is the twin of node 2 having a twin sum of 2 + 2 = 4.
+Thus, the maximum twin sum of the linked list is max(7, 4) = 7. 
+
+
+Example 3:
+</code></pre>
+
+<p><img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/2130_3.png" alt="2130_3.png"></p>
+
+<pre><code>Input: head = [1,100000]
+Output: 100001
+Explanation:
+There is only one node with a twin in the linked list having twin sum of 1 + 100000 = 100001.
+
+
+Constraints:
+The number of nodes in the list is an even integer in the range [2, 105].
+1 &lt;= Node.val &lt;= 105
+
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">pairSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>        
+        <span class="k">if</span> <span class="n">l1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># Find the end of first half and reverse second half.</span>
+        <span class="n">first_half_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_of_first_half</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
+        <span class="n">second_half_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse_list</span><span class="p">(</span><span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">first_position</span> <span class="o">=</span> <span class="n">l1</span>
+        <span class="n">second_position</span> <span class="o">=</span> <span class="n">second_half_start</span>
+        <span class="k">while</span> <span class="n">second_position</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">first_position</span><span class="o">.</span><span class="n">val</span><span class="o">+</span><span class="n">second_position</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">first_position</span> <span class="o">=</span> <span class="n">first_position</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">second_position</span> <span class="o">=</span> <span class="n">second_position</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">result</span>    
+
+    <span class="k">def</span> <span class="nf">end_of_first_half</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">slow</span>
+
+    <span class="k">def</span> <span class="nf">reverse_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">next_node</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">previous</span>
+            <span class="n">previous</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">next_node</span>
+        <span class="k">return</span> <span class="n">previous</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

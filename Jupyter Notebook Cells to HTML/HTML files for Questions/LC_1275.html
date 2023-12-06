@@ -1,0 +1,101 @@
+<h2><a href="https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/">1275. Find Winner on a Tic Tac Toe Game</a></h2>
+
+<pre><code>Tic-tac-toe is played by two players A and B on a 3 x 3 grid. The rules of Tic-Tac-Toe are:
+
+Players take turns placing characters into empty squares ' '.
+The first player A always places 'X' characters, while the second player B always places 'O' characters.
+'X' and 'O' characters are always placed into empty squares, never on filled ones.
+The game ends when there are three of the same (non-empty) character filling any row, column, or diagonal.
+The game also ends if all squares are non-empty.
+No more moves can be played if the game is over.
+Given a 2D integer array moves where moves[i] = [rowi, coli] indicates that the ith move will be played on grid[rowi][coli]. return the winner of the game if it exists (A or B). In case the game ends in a draw return "Draw". If there are still movements to play return "Pending".
+
+You can assume that moves is valid (i.e., it follows the rules of Tic-Tac-Toe), the grid is initially empty, and A will play first.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1275_1.jpg" alt="1275_1.jpg"></p>
+
+<pre><code>Input: moves = [[0,0],[2,0],[1,1],[2,1],[2,2]]
+Output: "A"
+Explanation: A wins, they always play first.
+
+
+Example 2:
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1275_2.jpg" alt="1275_2.jpg"></p>
+
+<pre><code>Input: moves = [[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]
+Output: "B"
+Explanation: B wins.
+
+
+Example 3:
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1275_3.jpg" alt="1275_3.jpg"></p>
+
+<pre><code>Input: moves = [[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]
+Output: "Draw"
+Explanation: The game ends in a draw since there are no moves to make.
+
+
+Constraints:
+1 &lt;= moves.length &lt;= 9
+moves[i].length == 2
+0 &lt;= rowi, coli &lt;= 2
+There are no repeated elements on moves.
+moves follow the rules of tic tac toe.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tictactoe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moves</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="c1"># n stands for the size of the board, n = 3 for the current game.</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="c1"># use rows and cols to record the value on each row and each column.</span>
+        <span class="c1"># diag1 and diag2 to record value on diagonal or anti-diagonal.</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="n">anti_diag</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Two players having value of 1 and -1, player_1 with value = 1 places first.</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">:</span>
+
+            <span class="c1">#add 1 if player 1 makes a move, -1 if player 2 makes a move</span>
+            <span class="n">rows</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">+=</span> <span class="n">player</span>
+            <span class="n">cols</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+=</span> <span class="n">player</span>
+
+            <span class="c1"># add for diagonal</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="n">col</span><span class="p">:</span>            
+                <span class="n">diag</span> <span class="o">+=</span> <span class="n">player</span>
+
+            <span class="c1">#add for anti-diagonal</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">+</span> <span class="n">col</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">anti_diag</span> <span class="o">+=</span> <span class="n">player</span>
+
+            <span class="c1"># check if this move meets any of the winning conditions</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">row</span><span class="p">])</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">col</span><span class="p">])</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span>
+                <span class="nb">abs</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">anti_diag</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;A&quot;</span> <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;B&quot;</span>
+
+            <span class="c1"># Change to the other player alternatively: from 1 to -1, from -1 to 1.</span>
+            <span class="n">player</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># If all moves are completed and there is still no result, we shall check if </span>
+        <span class="c1"># the grid is full or not. If so, the game ends with draw, otherwise pending.</span>
+        <span class="k">return</span> <span class="s2">&quot;Draw&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">moves</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="k">else</span> <span class="s2">&quot;Pending&quot;</span>   
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(m), where m is the length of the input moves</p>
+
+<p><strong>Space complexity</strong> : O(n), where n is the length of the grid </p>

@@ -1,0 +1,57 @@
+<h2><a href="https://leetcode.com/problems/reverse-linked-list-ii/">92. Reverse Linked List II</a></h2>
+
+<pre><code>Reverse a linked list from position m to n. Do it in one-pass.
+Note: 1 ≤ m ≤ n ≤ length of list.
+
+Example 1:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/92.jpg" alt="92.jpg"></p>
+
+<pre><code>Input: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2, n = 4
+Output: 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>        
+
+    <span class="k">def</span> <span class="nf">reverseBetween</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">l1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">head</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">head</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">l1</span> 
+
+        <span class="c1"># p is the pointer at position m-1</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="c1"># curr_node points to position m</span>
+        <span class="n">curr_node</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">next</span> 
+        <span class="n">prev_node</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">next_node</span> <span class="o">=</span> <span class="n">curr_node</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">curr_node</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev_node</span>
+            <span class="n">prev_node</span> <span class="o">=</span> <span class="n">curr_node</span>
+            <span class="n">curr_node</span> <span class="o">=</span> <span class="n">next_node</span>
+
+        <span class="c1"># Making connections</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr_node</span> <span class="c1"># Connecting 2-&gt;5 via 1</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev_node</span> <span class="c1"># Connecting 1-&gt;4</span>
+
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), the algorithm makes one traversal of the list of n nodes.</p>
+
+<p><strong>Space complexity</strong> : O(1) since we simply adjust some pointers in the original linked list</p>

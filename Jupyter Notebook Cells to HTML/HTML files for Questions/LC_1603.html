@@ -1,0 +1,56 @@
+<h2><a href="https://leetcode.com/problems/design-parking-system/">1603. Design Parking System</a></h2>
+
+<pre><code>Design a parking system for a parking lot. The parking lot has three kinds of parking spaces: big, medium, and small, with a fixed number of slots for each size.
+
+Implement the ParkingSystem class:
+
+ParkingSystem(int big, int medium, int small) Initializes object of the ParkingSystem class. The number of slots for each parking space are given as part of the constructor.
+bool addCar(int carType) Checks whether there is a parking space of carType for the car that wants to get into the parking lot. carType can be of three kinds: big, medium, or small, which are represented by 1, 2, and 3 respectively. A car can only park in a parking space of its carType. If there is no space available, return false, else park the car in that size space and return true.
+
+
+Example 1:
+
+Input
+["ParkingSystem", "addCar", "addCar", "addCar", "addCar"]
+[[1, 1, 0], [1], [2], [3], [1]]
+Output
+[null, true, true, false, false]
+
+Explanation
+ParkingSystem parkingSystem = new ParkingSystem(1, 1, 0);
+parkingSystem.addCar(1); // return true because there is 1 available slot for a big car
+parkingSystem.addCar(2); // return true because there is 1 available slot for a medium car
+parkingSystem.addCar(3); // return false because there is no available slot for a small car
+parkingSystem.addCar(1); // return false because there is no available slot for a big car. It is already occupied.
+
+
+Constraints:
+0 &lt;= big, medium, small &lt;= 1000
+carType is 1, 2, or 3
+At most 1000 calls will be made to addCar
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">ParkingSystem</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">big</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">medium</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">small</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">big</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">medium</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">small</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">addCar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carType</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="n">carType</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="n">carType</span><span class="p">]</span><span class="o">-=</span><span class="mi">1</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+<span class="c1"># Your ParkingSystem object will be instantiated and called as such:</span>
+<span class="c1"># obj = ParkingSystem(big, medium, small)</span>
+<span class="c1"># param_1 = obj.addCar(carType)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1), for updating dictionary</p>
+
+<p><strong>Space complexity</strong> : O(1), only three keys in dictionary</p>

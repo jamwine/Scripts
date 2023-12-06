@@ -1,0 +1,39 @@
+<h2>646. Maximum Length of Pair Chain</h2>
+
+<pre><code>You are given n pairs of numbers. In every pair, the first number is always smaller than the second number.
+
+Now, we define a pair (c, d) can follow another pair (a, b) if and only if b &lt; c. Chain of pairs can be formed in this fashion.
+
+Given a set of pairs, find the length longest chain which can be formed. You needn't use up all the given pairs. You can select pairs in any order.
+
+Example 1:
+Input: [[1,2], [2,3], [3,4]]
+Output: 2
+Explanation: The longest chain is [1,2] -&gt; [3,4]
+
+
+Note:
+The number of given pairs will be in the range [1, 1000].
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">findLongestChain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pairs</span><span class="p">:</span>   <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">c</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+            <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">b</span><span class="o">&lt;</span><span class="n">c</span><span class="p">):</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(NlogN) due to sorting, where N is the length of pairs</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

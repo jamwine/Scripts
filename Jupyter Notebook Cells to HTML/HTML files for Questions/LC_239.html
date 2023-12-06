@@ -1,0 +1,67 @@
+<h2><a href="https://leetcode.com/problems/sliding-window-maximum/">239. Sliding Window Maximum</a></h2>
+
+<pre><code>Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
+
+Follow up:
+Could you solve it in linear time?
+
+Example:
+
+Input: nums = [1,3,-1,-3,5,3,6,7], and k = 3
+Output: [3,3,5,5,6,7] 
+Explanation: 
+
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+
+
+Constraints:
+
+1 &lt;= nums.length &lt;= 10^5
+-10^4 &lt;= nums[i] &lt;= 10^4
+1 &lt;= k &lt;= nums.length
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maxSlidingWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(),</span> <span class="p">[]</span>
+        <span class="c1"># Maintain a deque of indexes</span>
+        <span class="c1"># Front of the deque should correspond to the largest value of window</span>
+        <span class="c1"># Add other indexes at the tail of deque until they are smaller</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+            <span class="c1"># This logic will execute when window size is greater than or equal to k</span>
+            <span class="c1"># At each step, append maximum value (corresponding to the first index of the queue) to the result</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">&gt;=</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+                <span class="c1"># Check the window size. If deque is full, remove the first index from deque</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">-</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">k</span><span class="p">:</span>  
+                    <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+
+            <span class="c1"># Check if the new element has greater value than elements in deque (corresponding to the last index)</span>
+            <span class="c1"># Remove the last index from deque</span>
+            <span class="k">while</span> <span class="n">q</span> <span class="ow">and</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+            <span class="c1"># append the new element&#39;s index in the deque    </span>
+            <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># After the loop ends, append the maximum value (corresponding to the first index of the queue) to the result</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">res</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), since each element is processed twice (index added and then removed from deque)</p>
+
+<p><strong>Space complexity</strong> : O(N), since O(N-K+1) is used for an output array and O(K) for a queue, where K is the window size</p>

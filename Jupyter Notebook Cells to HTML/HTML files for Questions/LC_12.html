@@ -1,0 +1,67 @@
+<h2><a href="https://leetcode.com/problems/integer-to-roman/">12. Integer to Roman</a></h2>
+
+<pre><code>Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+
+For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+
+Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
+
+Example 1:
+
+Input: 3
+Output: "III"
+
+Example 2: 
+
+Input: 4
+Output: "IV"
+
+Example 3: 
+
+Input: 9
+Output: "IX"
+
+Example 4: 
+
+Input: 58
+Output: "LVIII"
+Explanation: L = 50, V = 5, III = 3.
+
+Example 5:
+
+Input: 1994
+Output: "MCMXCIV"
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">intToRoman</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">thousands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;MM&quot;</span><span class="p">,</span> <span class="s2">&quot;MMM&quot;</span><span class="p">]</span>
+        <span class="n">hundreds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;CC&quot;</span><span class="p">,</span> <span class="s2">&quot;CCC&quot;</span><span class="p">,</span> <span class="s2">&quot;CD&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;DC&quot;</span><span class="p">,</span> <span class="s2">&quot;DCC&quot;</span><span class="p">,</span> <span class="s2">&quot;DCCC&quot;</span><span class="p">,</span> <span class="s2">&quot;CM&quot;</span><span class="p">]</span>
+        <span class="n">tens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;XX&quot;</span><span class="p">,</span> <span class="s2">&quot;XXX&quot;</span><span class="p">,</span> <span class="s2">&quot;XL&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;LX&quot;</span><span class="p">,</span> <span class="s2">&quot;LXX&quot;</span><span class="p">,</span> <span class="s2">&quot;LXXX&quot;</span><span class="p">,</span> <span class="s2">&quot;XC&quot;</span><span class="p">]</span>
+        <span class="n">ones</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;II&quot;</span><span class="p">,</span> <span class="s2">&quot;III&quot;</span><span class="p">,</span> <span class="s2">&quot;IV&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="s2">&quot;VI&quot;</span><span class="p">,</span> <span class="s2">&quot;VII&quot;</span><span class="p">,</span> <span class="s2">&quot;VIII&quot;</span><span class="p">,</span> <span class="s2">&quot;IX&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">thousands</span><span class="p">[</span><span class="n">num</span> <span class="o">//</span> <span class="mi">1000</span><span class="p">]</span> <span class="o">+</span> <span class="n">hundreds</span><span class="p">[</span><span class="n">num</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">//</span> <span class="mi">100</span><span class="p">]</span> <span class="o">+</span> <span class="n">tens</span><span class="p">[</span><span class="n">num</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">//</span> <span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="n">ones</span><span class="p">[</span><span class="n">num</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

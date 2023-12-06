@@ -1,0 +1,72 @@
+<h2><a href="https://leetcode.com/problems/the-kth-factor-of-n/">1492. The kth Factor of n</a></h2>
+
+<pre><code>Given two positive integers n and k.
+
+A factor of an integer n is defined as an integer i where n % i == 0.
+
+Consider a list of all factors of n sorted in ascending order, return the kth factor in this list or return -1 if n has less than k factors.
+
+Example 1:
+
+Input: n = 12, k = 3
+Output: 3
+Explanation: Factors list is [1, 2, 3, 4, 6, 12], the 3rd factor is 3.
+
+Example 2:
+
+Input: n = 7, k = 2
+Output: 7
+Explanation: Factors list is [1, 7], the 2nd factor is 7.
+
+Example 3:
+
+Input: n = 4, k = 4
+Output: -1
+Explanation: Factors list is [1, 2, 4], there is only 3 factors. We should return -1.
+
+Example 4:
+
+Input: n = 1, k = 1
+Output: 1
+Explanation: Factors list is [1], the 1st factor is 1.
+
+Example 5:
+
+Input: n = 1000, k = 3
+Output: 4
+Explanation: Factors list is [1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200, 250, 500, 1000].
+
+Constraints:
+
+1 &lt;= k &lt;= n &lt;= 1000
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">kthFactor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">divisors</span><span class="p">,</span> <span class="n">sqrt_n</span> <span class="o">=</span> <span class="p">[],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sqrt_n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">divisors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">x</span>
+
+        <span class="c1"># If n is a perfect square, skip the duplicate in the divisor list</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sqrt_n</span> <span class="o">*</span> <span class="n">sqrt_n</span> <span class="o">==</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># We&#39;re here because the kth divisor is not yet found.</span>
+        <span class="c1"># all other divisors are &quot;paired&quot; ones</span>
+        <span class="n">divisor_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">divisors</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="n">divisor_len</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="n">divisors</span><span class="p">[</span><span class="n">divisor_len</span> <span class="o">-</span> <span class="n">k</span><span class="p">])</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(sqrt(n)), when n is the integer</p>
+
+<p><strong>Space complexity</strong> : O(min(k, sqrt(n))), to store the list of divisors</p>

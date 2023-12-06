@@ -1,0 +1,73 @@
+<h2><a href="https://leetcode.com/problems/maximum-profit-in-job-scheduling/">1235. Maximum Profit in Job Scheduling</a></h2>
+
+<pre><code>We have n jobs, where every job is scheduled to be done from startTime[i] to endTime[i], obtaining a profit of profit[i].
+
+You're given the startTime, endTime and profit arrays, return the maximum profit you can take such that there are no two jobs in the subset with overlapping time range.
+
+If you choose a job that ends at time X you will be able to start another job that starts at time X.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1235_1.png" alt="1235_1.png"></p>
+
+<pre><code>Input: startTime = [1,2,3,3], endTime = [3,4,5,6], profit = [50,10,40,70]
+Output: 120
+Explanation: The subset chosen is the first and fourth job. 
+Time range [1-3]+[3-6] , we get profit of 120 = 50 + 70.
+
+
+Example 2:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1235_2.png" alt="1235_2.png"></p>
+
+<pre><code>Input: startTime = [1,2,3,4,6], endTime = [3,5,10,6,9], profit = [20,20,100,70,60]
+Output: 150
+Explanation: The subset chosen is the first, fourth and fifth job. 
+Profit obtained 150 = 20 + 70 + 60.
+
+
+Example 3:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1235_3.png" alt="1235_3.png"></p>
+
+<pre><code>Input: startTime = [1,1,1], endTime = [2,3,4], profit = [5,6,4]
+Output: 6
+
+
+Constraints:
+1 &lt;= startTime.length == endTime.length == profit.length &lt;= 5 * 104
+1 &lt;= startTime[i] &lt; endTime[i] &lt;= 109
+1 &lt;= profit[i] &lt;= 104
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">jobScheduling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startTime</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">endTime</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">profit</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">jobs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">,</span> <span class="n">profit</span><span class="p">))</span>
+        <span class="n">max_profit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_heap</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># (end_time, profit)</span>
+
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">profit</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">min_heap</span> <span class="ow">and</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">min_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">max_profit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_profit</span><span class="p">,</span> <span class="n">min_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">heappop</span><span class="p">(</span><span class="n">min_heap</span><span class="p">)</span>
+
+            <span class="n">heappush</span><span class="p">(</span><span class="n">min_heap</span><span class="p">,</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">profit</span> <span class="o">+</span> <span class="n">max_profit</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="n">min_heap</span><span class="p">:</span>
+            <span class="n">max_profit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_profit</span><span class="p">,</span> <span class="n">min_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">heappop</span><span class="p">(</span><span class="n">min_heap</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">max_profit</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N log N)</p>
+
+<p><strong>Space complexity</strong> : O(N)</p>

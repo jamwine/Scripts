@@ -1,0 +1,54 @@
+<h2><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/">82. Remove Duplicates from Sorted List II</a></h2>
+
+<pre><code>Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+
+Return the linked list sorted as well.
+
+Example 1:
+</code></pre>
+
+<p><img width="35%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/82_1.jpg" alt="82_1.jpg"></p>
+
+<pre><code>Input: 1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5
+Output: 1-&gt;2-&gt;5
+
+Example 2: 
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/82_2.jpg" alt="82_2.jpg"></p>
+
+<pre><code>Input: 1-&gt;1-&gt;1-&gt;2-&gt;3
+Output: 2-&gt;3
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">deleteDuplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ListNode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ListNode</span><span class="p">]:</span>   
+        <span class="n">head</span><span class="o">=</span><span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="o">=</span><span class="n">l1</span>
+        <span class="n">slow</span><span class="p">,</span><span class="n">fast</span><span class="o">=</span><span class="n">head</span><span class="p">,</span><span class="n">l1</span>
+
+        <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fast</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                    <span class="n">fast</span><span class="o">=</span><span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+                <span class="n">fast</span><span class="o">=</span><span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+                <span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="o">=</span><span class="n">fast</span>
+            <span class="k">else</span><span class="p">:</span>  
+                <span class="n">slow</span><span class="o">=</span><span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+                <span class="n">fast</span><span class="o">=</span><span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

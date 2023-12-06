@@ -1,0 +1,69 @@
+<h2><a href="https://leetcode.com/problems/maximum-average-subtree/">1120. Maximum Average Subtree</a></h2>
+
+<pre><code>Given the root of a binary tree, return the maximum average value of a subtree of that tree. Answers within 10-5 of the actual answer will be accepted.
+
+A subtree of a tree is any node of that tree plus all its descendants.
+
+The average value of a tree is the sum of its values, divided by the number of nodes.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1120.png" alt="1120.png"></p>
+
+<pre><code>Input: root = [5,6,1]
+Output: 6.00000
+Explanation: 
+For the node with value = 5 we have an average of (5 + 6 + 1) / 3 = 4.
+For the node with value = 6 we have an average of 6 / 1 = 6.
+For the node with value = 1 we have an average of 1 / 1 = 1.
+So the answer is 6 which is the maximum.
+
+
+Example 2:
+Input: root = [0,null,1]
+Output: 1.00000
+
+
+Constraints:
+The number of nodes in the tree is in the range [1, 104].
+0 &lt;= Node.val &lt;= 105
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maximumAverageSubtree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TreeNode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">max_avg</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">def</span> <span class="nf">getMaxAvgValue</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">max_avg</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">root</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+
+            <span class="n">total_left</span><span class="p">,</span> <span class="n">nodes_left</span> <span class="o">=</span> <span class="n">getMaxAvgValue</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="n">total_right</span><span class="p">,</span> <span class="n">nodes_right</span> <span class="o">=</span> <span class="n">getMaxAvgValue</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+            <span class="n">total_curr</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">val</span> <span class="o">+</span> <span class="n">total_left</span> <span class="o">+</span> <span class="n">total_right</span> 
+            <span class="n">nodes_curr</span> <span class="o">=</span> <span class="n">nodes_left</span> <span class="o">+</span> <span class="n">nodes_right</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">avg</span> <span class="o">=</span> <span class="n">total_curr</span> <span class="o">/</span> <span class="n">nodes_curr</span>
+            <span class="n">max_avg</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_avg</span><span class="p">,</span> <span class="n">avg</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">total_curr</span><span class="p">,</span> <span class="n">nodes_curr</span>
+
+        <span class="n">getMaxAvgValue</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_avg</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is a number of nodes, since we visit each node</p>
+
+<p><strong>Space complexity</strong> : O(H) or O (log N), H or log N is the tree height to keep the recursion stack, in worst case when the tree is skewed, O(N)</p>

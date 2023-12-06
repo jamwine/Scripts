@@ -1,0 +1,67 @@
+<h2><a href="https://leetcode.com/problems/analyze-user-website-visit-pattern/">1152. Analyze User Website Visit Pattern</a></h2>
+
+<pre><code>We are given some website visits: the user with name username[i] visited the website website[i] at time timestamp[i].
+
+A 3-sequence is a list of websites of length 3 sorted in ascending order by the time of their visits.  (The websites in a 3-sequence are not necessarily distinct.)
+
+Find the 3-sequence visited by the largest number of users. If there is more than one solution, return the lexicographically smallest such 3-sequence.
+
+Example 1:
+
+Input: username = ["joe","joe","joe","james","james","james","james","mary","mary","mary"], timestamp = [1,2,3,4,5,6,7,8,9,10], website = ["home","about","career","home","cart","maps","home","home","about","career"]
+Output: ["home","about","career"]
+
+Explanation: 
+The tuples in this example are:
+["joe", 1, "home"]
+["joe", 2, "about"]
+["joe", 3, "career"]
+["james", 4, "home"]
+["james", 5, "cart"]
+["james", 6, "maps"]
+["james", 7, "home"]
+["mary", 8, "home"]
+["mary", 9, "about"]
+["mary", 10, "career"]
+The 3-sequence ("home", "about", "career") was visited at least once by 2 users.
+The 3-sequence ("home", "cart", "maps") was visited at least once by 1 user.
+The 3-sequence ("home", "cart", "home") was visited at least once by 1 user.
+The 3-sequence ("home", "maps", "home") was visited at least once by 1 user.
+The 3-sequence ("cart", "maps", "home") was visited at least once by 1 user.
+
+Note:
+
+3 &lt;= N = username.length = timestamp.length = website.length &lt;= 50
+1 &lt;= username[i].length &lt;= 10
+0 &lt;= timestamp[i] &lt;= 10^9
+1 &lt;= website[i].length &lt;= 10
+Both username[i] and website[i] contain only lowercase characters.
+It is guaranteed that there is at least one user who visited at least 3 websites.
+No user visits two websites at the same time.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">mostVisitedPattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">website</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+        <span class="n">by_user</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">website</span><span class="p">)):</span>
+            <span class="n">by_user</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="n">site_count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">by_user</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">site_count</span> <span class="o">+=</span> <span class="n">Counter</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+
+         <span class="c1"># sort descending by value, then lexicographically</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">site_count</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">site_count</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">k</span><span class="p">))</span>
+<span class="c1">#         return max(sorted(site_count), key=site_count.get)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(m.n^3) where m are unique users and n are unique websites</p>
+
+<p><strong>Space complexity</strong> : O(m + n)</p>

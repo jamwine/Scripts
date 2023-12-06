@@ -1,0 +1,95 @@
+<h2><a href="https://leetcode.com/problems/snakes-and-ladders/">909. Snakes and Ladders</a></h2>
+
+<pre><code>You are given an n x n integer matrix board where the cells are labeled from 1 to n2 in a Boustrophedon style starting from the bottom left of the board (i.e. board[n - 1][0]) and alternating direction each row.
+
+You start on square 1 of the board. In each move, starting from square curr, do the following:
+
+Choose a destination square next with a label in the range [curr + 1, min(curr + 6, n2)].
+This choice simulates the result of a standard 6-sided die roll: i.e., there are always at most 6 destinations, regardless of the size of the board.
+If next has a snake or ladder, you must move to the destination of that snake or ladder. Otherwise, you move to next.
+The game ends when you reach the square n2.
+A board square on row r and column c has a snake or ladder if board[r][c] != -1. The destination of that snake or ladder is board[r][c]. Squares 1 and n2 do not have a snake or ladder.
+
+Note that you only take a snake or ladder at most once per move. If the destination to a snake or ladder is the start of another snake or ladder, you do not follow the subsequent snake or ladder.
+
+For example, suppose the board is [[-1,4],[-1,3]], and on the first move, your destination square is 2. You follow the ladder to square 3, but do not follow the subsequent ladder to 4.
+Return the least number of moves required to reach the square n2. If it is not possible to reach the square, return -1.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/909.png" alt="909.png"></p>
+
+<pre><code>Input: board = [[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1,-1],[-1,35,-1,-1,13,-1],[-1,-1,-1,-1,-1,-1],[-1,15,-1,-1,-1,-1]]
+Output: 4
+Explanation: 
+In the beginning, you start at square 1 (at row 5, column 0).
+You decide to move to square 2 and must take the ladder to square 15.
+You then decide to move to square 17 and must take the snake to square 13.
+You then decide to move to square 14 and must take the ladder to square 35.
+You then decide to move to square 36, ending the game.
+This is the lowest possible number of moves to reach the last square, so return 4.
+
+
+Example 2:
+Input: board = [[-1,-1],[-1,3]]
+Output: 1
+
+
+Constraints:
+n == board.length == board[i].length
+2 &lt;= n &lt;= 20
+grid[i][j] is either -1 or in the range [1, n2].
+The squares labeled 1 and n2 do not have any ladders or snakes.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">snakesAndLadders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="c1"># Defining the array containing all numbers in proper order</span>
+        <span class="c1"># 0 defines the first starting position</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+
+        <span class="c1"># Looping from the end row</span>
+        <span class="c1"># if even: row is appended, if odd: row is reversed and appended</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">board</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span> 
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">arr</span> <span class="o">+=</span> <span class="n">row</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">arr</span> <span class="o">+=</span> <span class="n">row</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>   
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="c1"># (cell, steps)</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">cell</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">cell</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span> 
+                <span class="k">return</span> <span class="n">steps</span> 
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+                <span class="n">next_cell</span> <span class="o">=</span> <span class="n">cell</span> <span class="o">+</span> <span class="n">i</span>
+
+                <span class="c1"># Boundary Condition</span>
+                <span class="k">if</span> <span class="n">next_cell</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">next_cell</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="p">:</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">next_cell</span><span class="p">)</span>
+
+                    <span class="c1"># next_cell is normal</span>
+                    <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">next_cell</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">next_cell</span><span class="p">,</span> <span class="n">steps</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+                    <span class="c1"># next_cell is snake or ladder </span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">arr</span><span class="p">[</span><span class="n">next_cell</span><span class="p">],</span> <span class="n">steps</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> :  O(N), where N represents the number of cells</p>
+
+<p><strong>Space complexity</strong> : O(N)</p>

@@ -1,0 +1,75 @@
+<h2><a href="https://leetcode.com/problems/minimum-window-substring/">76. Minimum Window Substring</a></h2>
+
+<pre><code>Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+Example:
+
+Input: S = "ADOBECODEBANC", T = "ABC"
+Output: "BANC"
+
+Note:
+
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there is such window, you are guaranteed that there will always be only one unique minimum window in S.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_string</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+
+        <span class="c1"># maintain a dictionary of target characters</span>
+        <span class="n">count</span><span class="o">=</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">=</span><span class="n">count</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">min_window</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">target_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>        
+
+        <span class="c1"># Expanding window till all target characters are found </span>
+        <span class="k">for</span> <span class="n">right</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">search_string</span><span class="p">)):</span>
+            <span class="n">ch</span><span class="o">=</span><span class="n">search_string</span><span class="p">[</span><span class="n">right</span><span class="p">]</span>
+
+            <span class="c1"># if target character found, reduce the target length </span>
+            <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">target_len</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="c1"># Maintain a count of each character, REDUCE by 1</span>
+            <span class="c1"># if characters (other than target), count will be -1</span>
+            <span class="c1"># if target characters, count will be 0</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="c1"># When target is found, target_len will be 0 (thus while loop will execute)</span>
+            <span class="k">while</span> <span class="n">target_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="c1"># Update current window size</span>
+                <span class="n">window_len</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">+</span> <span class="mi">1</span>
+
+                <span class="c1"># Update smallest window size if window size (window_len) is smaller than current minimum (min_window)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">min_window</span> <span class="ow">or</span> <span class="n">window_len</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_window</span><span class="p">):</span>
+                    <span class="n">min_window</span> <span class="o">=</span> <span class="n">search_string</span><span class="p">[</span><span class="n">left</span> <span class="p">:</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Shrinking</span>
+                <span class="n">ch</span><span class="o">=</span><span class="n">search_string</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+
+                <span class="c1"># Maintain a count of each character, INCREASE by 1</span>
+                <span class="c1"># if character (other than target), count will be 0</span>
+                <span class="c1"># if target character, count will be greater than 1</span>
+                <span class="n">count</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># if target character has count greater than 0, increase the target_len (this will stop while loop)</span>
+                <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">target_len</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Drop the character ch out of the current window </span>
+                <span class="n">left</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">min_window</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(S + T), S and T are the lengths of both strings</p>
+
+<p><strong>Space complexity</strong> : O(S + T)</p>

@@ -1,0 +1,67 @@
+<h2>228. Summary Ranges</h2>
+
+<pre><code>You are given a sorted unique integer array nums.
+
+Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+
+Each range [a,b] in the list should be output as:
+
+"a-&gt;b" if a != b
+"a" if a == b
+
+Example 1:
+Input: nums = [0,1,2,4,5,7]
+Output: ["0-&gt;2","4-&gt;5","7"]
+Explanation: The ranges are:
+[0,2] --&gt; "0-&gt;2"
+[4,5] --&gt; "4-&gt;5"
+[7,7] --&gt; "7"
+
+Example 2:
+Input: nums = [0,2,3,4,6,8,9]
+Output: ["0","2-&gt;4","6","8-&gt;9"]
+Explanation: The ranges are:
+[0,0] --&gt; "0"
+[2,4] --&gt; "2-&gt;4"
+[6,6] --&gt; "6"
+[8,9] --&gt; "8-&gt;9"
+
+Example 3:
+Input: nums = []
+Output: []
+
+Example 4:
+Input: nums = [-1]
+Output: ["-1"]
+
+Example 5:
+Input: nums = [0]
+Output: ["0"]
+
+Constraints:
+0 &lt;= nums.length &lt;= 20
+-231 &lt;= nums[i] &lt;= 231 - 1
+All the values of nums are unique.
+nums is sorted in ascending order.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">summaryRanges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">ranges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">strout</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">e</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="ow">or</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">ranges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strout</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">start</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>                
+        <span class="k">return</span> <span class="n">ranges</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is the length of the input array. This is because we are only iterating over the array once.</p>
+
+<p><strong>Space complexity</strong> : O(N), output list is of size N.</p>

@@ -1,0 +1,81 @@
+<h2><a href="https://leetcode.com/problems/sort-list/">148. Sort List</a></h2>
+
+<pre><code>Given the head of a linked list, return the list after sorting it in ascending order.
+
+Example 1:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/148_1.jpg" alt="148_1.jpg"></p>
+
+<pre><code>Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+
+
+Example 2:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/148_2.jpg" alt="148_2.jpg"></p>
+
+<pre><code>Input: head = [-1,5,3,4,0]
+Output: [-1,0,3,4,5]
+
+
+Example 3:
+Input: head = []
+Output: []
+
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 5 * 104].
+-105 &lt;= Node.val &lt;= 105
+
+Follow up: Can you sort the linked list in O(n logn) time and O(1) memory (i.e. constant space)?
+
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">sortList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">head</span>
+        <span class="n">middle_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_middle_node</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+        <span class="n">right_head</span> <span class="o">=</span> <span class="n">middle_node</span><span class="o">.</span><span class="n">next</span>
+        <span class="n">middle_node</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortList</span><span class="p">(</span><span class="n">head</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortList</span><span class="p">(</span><span class="n">right_head</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">find_middle_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">head</span><span class="p">):</span>
+        <span class="n">slow</span><span class="p">,</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">,</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">slow</span>
+
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">):</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">l1</span> <span class="ow">and</span> <span class="n">l2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l1</span><span class="o">.</span><span class="n">val</span> <span class="o">&lt;</span> <span class="n">l2</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">l1</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">next</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">l2</span>
+                <span class="n">l2</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">l1</span> <span class="k">if</span> <span class="n">l1</span> <span class="k">else</span> <span class="n">l2</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n log n), where n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(1), however some memory might be consumed due to recursive stack</p>

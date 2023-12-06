@@ -1,0 +1,75 @@
+<h2>872. Leaf-Similar Trees</h2>
+
+<pre><code>Consider all the leaves of a binary tree, from left to right order, the values of those leaves form a leaf value sequence.
+
+       3 
+     /   \
+    /     \
+   5       1
+  / \     / \ 
+ 6   2   9   8
+    / \
+   7   4
+
+For example, in the given tree above, the leaf value sequence is (6, 7, 4, 9, 8).
+
+Two binary trees are considered leaf-similar if their leaf value sequence is the same.
+
+Return true if and only if the two given trees with head nodes root1 and root2 are leaf-similar.
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/872.jpg" alt="872.jpg" /></p>
+
+<pre><code>Input: root1 = [3,5,1,6,2,9,8,null,null,7,4], root2 = [3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]
+Output: true
+
+Example 2:
+Input: root1 = [1], root2 = [1]
+Output: true
+
+Example 3:
+Input: root1 = [1], root2 = [2]
+Output: false
+
+Example 4:
+Input: root1 = [1,2], root2 = [2,2]
+Output: true
+
+Example 5:
+Input: root1 = [1,2,3], root2 = [1,3,2]
+Output: false
+
+Constraints:
+The number of nodes in each tree will be in the range [1, 200].
+Both of the given trees will have values in the range [0, 200].
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">leafSimilar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root1</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">root2</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">findleaf_inorder</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">root</span><span class="o">.</span><span class="n">val</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">findleaf_inorder</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">+</span> <span class="n">findleaf_inorder</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">findleaf_inorder</span><span class="p">(</span><span class="n">root1</span><span class="p">)</span> <span class="o">==</span> <span class="n">findleaf_inorder</span><span class="p">(</span><span class="n">root2</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : Time Complexity: O(T1 + T2), where T1 and T2 are the lengths of the given trees.</p>
+
+<p><strong>Space complexity</strong> : O(T1 + T2), the space used in storing the leaf values.</p>

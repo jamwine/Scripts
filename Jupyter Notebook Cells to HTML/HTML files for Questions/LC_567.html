@@ -1,0 +1,62 @@
+<h2><a href="https://leetcode.com/problems/permutation-in-string/">567. Permutation in String</a></h2>
+
+<pre><code>Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+
+In other words, return true if one of s1's permutations is the substring of s2.
+
+
+Example 1:
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+
+
+Example 2:
+Input: s1 = "ab", s2 = "eidboaoo"
+Output: false
+
+
+Constraints:
+1 &lt;= s1.length, s2.length &lt;= 10^4
+s1 and s2 consist of lowercase English letters.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">checkInclusion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span>
+
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">s1</span><span class="p">:</span>
+            <span class="n">ch_idx</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="n">target</span><span class="p">[</span><span class="n">ch_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span> 
+            <span class="c1"># decrease the window size, remove the left character</span>
+            <span class="k">if</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">):</span>
+                <span class="n">ch_idx</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="n">left</span><span class="p">])</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+                <span class="n">seen</span><span class="p">[</span><span class="n">ch_idx</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># increase the window size, add the right character</span>
+            <span class="n">ch_idx</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s2</span><span class="p">[</span><span class="n">right</span><span class="p">])</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">ch_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># if current string matches the target string, add the left index in result</span>
+            <span class="k">if</span> <span class="n">seen</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), N is the length of bigger string</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

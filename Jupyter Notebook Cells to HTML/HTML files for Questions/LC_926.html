@@ -1,0 +1,53 @@
+<h2><a href="https://leetcode.com/problems/flip-string-to-monotone-increasing/">926. Flip String to Monotone Increasing</a></h2>
+
+<pre><code>A binary string is monotone increasing if it consists of some number of 0's (possibly none), followed by some number of 1's (also possibly none).
+
+You are given a binary string s. You can flip s[i] changing it from 0 to 1 or from 1 to 0.
+Return the minimum number of flips to make s monotone increasing.
+
+Example 1:
+Input: s = "00110"
+Output: 1
+Explanation: We flip the last digit to get 00111.
+
+Example 2:
+Input: s = "010110"
+Output: 2
+Explanation: We flip to get 011111, or alternatively 000111.
+
+Example 3:
+Input: s = "00011000"
+Output: 2
+Explanation: We flip to get 00000000.
+
+Constraints:
+1 &lt;= s.length &lt;= 105
+s[i] is either '0' or '1'.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minFlipsMonoIncr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">zeros</span><span class="p">,</span> <span class="n">ones</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span><span class="n">zeros</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="c1"># check zeros on the right side and ones on the left side of the pivot.</span>
+        <span class="c1"># For 11011: initially there is 1 zero on right side and 0 ones on the left side: so (zeros,ones) = (1,0)</span>
+        <span class="c1"># Next, temp = [(1,0),(1,1),(1,2),(0,2),(0,3),(0,4)]</span>
+        <span class="c1"># so: min(zeros+ones)= min(1, 2, 3, 2, 3, 4) = 1</span>
+
+        <span class="n">flips</span> <span class="o">=</span> <span class="n">zeros</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span><span class="s1">&#39;0&#39;</span><span class="p">:</span><span class="n">zeros</span><span class="o">-=</span><span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span><span class="n">ones</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">flips</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">flips</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">+</span> <span class="n">ones</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">flips</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

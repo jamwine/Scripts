@@ -1,0 +1,70 @@
+<h2><a href="https://leetcode.com/problems/palindrome-linked-list/">234. Palindrome Linked List</a></h2>
+
+<pre><code>Given a singly linked list, determine if it is a palindrome. Could you do it in O(n) time and O(1) space?
+
+Example 1:
+
+Input: 1-&gt;2
+Output: false
+
+Example 2:
+
+Input: 1-&gt;2-&gt;2-&gt;1
+Output: true
+
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">isPalindrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">l1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># Find the end of first half and reverse second half.</span>
+        <span class="n">first_half_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_of_first_half</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
+        <span class="n">second_half_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse_list</span><span class="p">(</span><span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+
+        <span class="c1"># Check whether or not there&#39;s a palindrome.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">l1</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">second_half_start</span>
+        <span class="k">while</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">right</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">val</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">right</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="c1"># Restore the list and return the result.</span>
+        <span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse_list</span><span class="p">(</span><span class="n">second_half_start</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>    
+
+    <span class="k">def</span> <span class="nf">end_of_first_half</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">slow</span>
+
+    <span class="k">def</span> <span class="nf">reverse_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">next_node</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">previous</span>
+            <span class="n">previous</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">next_node</span>
+        <span class="k">return</span> <span class="n">previous</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

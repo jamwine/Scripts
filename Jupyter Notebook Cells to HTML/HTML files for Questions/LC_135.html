@@ -1,0 +1,74 @@
+<h2><a href="https://leetcode.com/problems/candy/">135. Candy</a></h2>
+
+<pre><code>There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
+
+You are giving candies to these children subjected to the following requirements:
+
+Each child must have at least one candy.
+Children with a higher rating get more candies than their neighbors.
+Return the minimum number of candies you need to have to distribute the candies to the children.
+
+Example 1:
+Input: ratings = [1,0,2]
+Output: 5
+Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+
+Example 2:
+Input: ratings = [1,2,2]
+Output: 4
+Explanation: You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
+The third child gets 1 candy because it satisfies the above two conditions.
+
+Constraints:
+n == ratings.length
+1 &lt;= n &lt;= 2 * 104
+0 &lt;= ratings[i] &lt;= 2 * 104
+</code></pre>
+
+<h3>Solution</h3>
+
+<p><img width="60%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/135.jpeg" alt="135.jpeg"></p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">candy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ratings</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">down</span> <span class="o">=</span> <span class="n">peak</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ratings</span><span class="p">)):</span>
+
+            <span class="c1"># if rising, then update up/peak and clear down</span>
+            <span class="k">if</span> <span class="n">ratings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ratings</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="n">up</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">peak</span> <span class="o">=</span> <span class="n">up</span>
+                <span class="n">down</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">up</span>
+
+            <span class="c1"># if equal, then add 1 and clear up/down/peak</span>
+            <span class="k">elif</span> <span class="n">ratings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ratings</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="n">up</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">down</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">peak</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># if declining, then update down and clear up</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">up</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">down</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">down</span>
+                <span class="c1"># if peak is not large enough, then we need to make peak larger</span>
+                <span class="k">if</span> <span class="n">peak</span> <span class="o">&lt;=</span> <span class="n">down</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">result</span>           
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N are the total children</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

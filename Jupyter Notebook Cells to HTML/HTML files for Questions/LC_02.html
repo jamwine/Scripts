@@ -1,0 +1,44 @@
+<h2><a href="https://leetcode.com/problems/add-two-numbers/">02. Add Two Numbers</a></h2>
+
+<pre><code>You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example 1:
+
+Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)
+Output: 7 -&gt; 0 -&gt; 8
+Explanation: 342 + 465 = 807.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">addTwoNumbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">l2</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="n">l3</span><span class="o">=</span><span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">l3</span>
+        <span class="n">carry</span><span class="o">=</span><span class="mi">0</span>
+
+        <span class="k">while</span> <span class="n">l1</span> <span class="ow">or</span> <span class="n">l2</span> <span class="ow">or</span> <span class="n">carry</span><span class="p">:</span>
+            <span class="n">v1</span><span class="o">=</span><span class="n">l1</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">l1</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">v2</span><span class="o">=</span><span class="n">l2</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">l2</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">carry</span><span class="p">,</span><span class="n">out</span><span class="o">=</span><span class="nb">divmod</span><span class="p">(</span><span class="n">v1</span><span class="o">+</span><span class="n">v2</span><span class="o">+</span><span class="n">carry</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">next</span><span class="o">=</span><span class="n">ListNode</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">l1</span><span class="o">=</span><span class="n">l1</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">l1</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">l2</span><span class="o">=</span><span class="n">l2</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">l2</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">l3</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(max(m, n)), m and n represents the length of l1 and l2 respectively</p>
+
+<p><strong>Space complexity</strong> : O(max(m, n))</p>

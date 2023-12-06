@@ -1,0 +1,120 @@
+<h2><a href="https://leetcode.com/problems/text-justification/">68. Text Justification</a></h2>
+
+<pre><code>Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
+
+You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.
+
+Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+
+For the last line of text, it should be left-justified and no extra space is inserted between words.
+
+Note:
+
+A word is defined as a character sequence consisting of non-space characters only.
+Each word's length is guaranteed to be greater than 0 and not exceed maxWidth.
+The input array words contains at least one word.
+
+
+Example 1:
+
+Input: words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16
+Output:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+
+
+Example 2:
+
+Input: words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16
+Output:
+[
+  "What   must   be",
+  "acknowledgment  ",
+  "shall be        "
+]
+Explanation: Note that the last line is "shall be    " instead of "shall     be", because the last line must be left-justified instead of fully-justified.
+Note that the second line is also left-justified becase it contains only one word.
+
+
+Example 3:
+
+Input: words = ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"], maxWidth = 20
+Output:
+[
+  "Science  is  what we",
+  "understand      well",
+  "enough to explain to",
+  "a  computer.  Art is",
+  "everything  else  we",
+  "do                  "
+]
+
+
+Constraints:
+
+1 &lt;= words.length &lt;= 300
+1 &lt;= words[i].length &lt;= 20
+words[i] consists of only English letters and symbols.
+1 &lt;= maxWidth &lt;= 100
+words[i].length &lt;= maxWidth
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">fullJustify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">maxWidth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># current line width</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># current line words</span>
+
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="n">word_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">line_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">word_length</span> <span class="o">+</span> <span class="n">width</span> <span class="o">+</span> <span class="n">line_length</span> <span class="o">&lt;=</span> <span class="n">maxWidth</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">+=</span> <span class="n">word_length</span>
+                <span class="n">line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># If the current line only contains one word, fill the remaining string with spaces</span>
+            <span class="k">if</span> <span class="n">line_length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">end_space</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">maxWidth</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                <span class="n">line</span> <span class="o">+=</span> <span class="n">end_space</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="c1"># Else calculate how many common spaces and extra left spaces are there for the current line.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">space_slots</span> <span class="o">=</span> <span class="n">line_length</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">common_space</span><span class="p">,</span> <span class="n">left_space</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">maxWidth</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">space_slots</span><span class="p">)</span>
+
+                <span class="c1"># Distribute extra spaces on left first</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">left_space</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">line</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+                    <span class="n">left_space</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># Join line array into a string by common spaces, and append to justified lines.</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">common_space</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+
+            <span class="c1"># Create new line array with the current word in iteration, and reset current line width as well.</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span><span class="p">]</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+        <span class="c1"># Last line</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">end_space</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">maxWidth</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+        <span class="n">line</span> <span class="o">+=</span> <span class="n">end_space</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), where n is the length of words</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

@@ -1,0 +1,57 @@
+<h2><a href="https://leetcode.com/problems/invert-binary-tree/">226. Invert Binary Tree</a></h2>
+
+<pre><code>Given the root of a binary tree, invert the tree, and return its root.
+
+Example 1:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/226_1.jpg" alt="226_1.jpg"></p>
+
+<pre><code>
+Input: root = [4,2,7,1,3,6,9]
+Output: [4,7,2,9,6,3,1]
+
+
+Example 2:
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/226_2.jpg" alt="226_2.jpg"></p>
+
+<pre><code>Input: root = [2,1,3]
+Output: [2,3,1]
+
+
+Example 3:
+
+Input: root = []
+Output: []
+
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 100].
+-100 &lt;= Node.val &lt;= 100
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">invertTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TreeNode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">invertTree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="c1"># swapping</span>
+        <span class="k">return</span> <span class="n">root</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is a number of nodes, since we visit each node only once</p>
+
+<p><strong>Space complexity</strong> : O(H), H is the tree height to keep the recursion stack, in worst case when the tree is skewed, O(N)</p>

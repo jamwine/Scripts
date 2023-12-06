@@ -1,0 +1,66 @@
+<h2><a href="https://leetcode.com/problems/linked-list-cycle/">141. Linked List Cycle</a></h2>
+
+<pre><code>Given a linked list, determine if it has a cycle in it.
+
+To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where the tail connects to. If pos == -1, then there is no cycle in the linked list.
+
+Follow up:
+
+Can you solve it using O(1) (i.e. constant) memory?
+
+Example 1:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/141.1.png" alt="141.1.png"></p>
+
+<pre><code>Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+
+Example 2:
+</code></pre>
+
+<p><img width="15%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/141.2.png" alt="141.2.png"></p>
+
+<pre><code>Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where tail connects to the first node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
+
+
+Constraints:
+
+The number of the nodes in the list is in the range [0, 104].
+-105 &lt;= Node.val &lt;= 105
+pos is -1 or a valid index in the linked-list.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, x):</span>
+<span class="c1">#         self.val = x</span>
+<span class="c1">#         self.next = None</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">hasCycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>        
+        <span class="n">slow</span><span class="p">,</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">,</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">while</span> <span class="n">slow</span> <span class="o">!=</span> <span class="n">fast</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fast</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">slow</span><span class="p">,</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="p">,</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

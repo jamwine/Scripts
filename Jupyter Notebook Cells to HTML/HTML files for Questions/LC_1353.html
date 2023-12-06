@@ -1,0 +1,68 @@
+<h2><a href="https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/">1353. Maximum Number of Events That Can Be Attended</a></h2>
+
+<pre><code>You are given an array of events where events[i] = [startDayi, endDayi]. Every event i starts at startDayi and ends at endDayi.
+
+You can attend an event i at any day d where startTimei &lt;= d &lt;= endTimei. You can only attend one event at any time d.
+
+Return the maximum number of events you can attend.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1353.jpg" alt="1353.png"></p>
+
+<pre><code>Input: events = [[1,2],[2,3],[3,4]]
+Output: 3
+Explanation: You can attend all the three events.
+One way to attend them all is as shown.
+Attend the first event on day 1.
+Attend the second event on day 2.
+Attend the third event on day 3.
+
+
+Example 2:
+Input: events= [[1,2],[2,3],[3,4],[1,2]]
+Output: 4
+
+
+Constraints:
+1 &lt;= events.length &lt;= 105
+events[i].length == 2
+1 &lt;= startDayi &lt;= endDayi &lt;= 105
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maxEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">events</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">max_days</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">events</span><span class="p">)</span>
+        <span class="n">minheap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">max_days</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># loop over max_days </span>
+            <span class="c1"># add all the events that could be attended till day &#39;d&#39; in the minheap</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="ow">and</span> <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">):</span> 
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">minheap</span><span class="p">,</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># sort the minheap based on end time. </span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># attend one event</span>
+            <span class="k">if</span> <span class="n">minheap</span><span class="p">:</span>
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">minheap</span><span class="p">)</span>  
+                <span class="n">result</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># discard all the events till day &#39;d&#39; which cannot be attended</span>
+            <span class="k">while</span> <span class="n">minheap</span> <span class="ow">and</span> <span class="n">minheap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">:</span>  
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">minheap</span><span class="p">)</span> 
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(nlogn)</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

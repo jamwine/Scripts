@@ -1,0 +1,81 @@
+<h2>437. Path Sum III</h2>
+
+<pre><code>You are given a binary tree in which each node contains an integer value.
+
+Find the number of paths that sum to a given value.
+
+The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+
+The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.
+
+Example 1:
+
+root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+      10
+     /  \
+    5   -3
+   / \    \
+  3   2   11
+ / \   \
+3  -2   1
+
+Return 3. The paths that sum to 8 are:
+
+1.  5 -&gt; 3
+2.  5 -&gt; 2 -&gt; 1
+3. -3 -&gt; 11
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for a binary tree node.</span>
+<span class="c1"># class TreeNode:</span>
+<span class="c1">#     def __init__(self, val=0, left=None, right=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.left = left</span>
+<span class="c1">#         self.right = right</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">pathSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">TreeNode</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">nonlocal</span> <span class="n">count</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+                <span class="k">return</span> 
+
+            <span class="c1"># current prefix sum</span>
+            <span class="n">curr_sum</span> <span class="o">+=</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span>
+            <span class="c1"># here is the sum we&#39;re looking for</span>
+            <span class="k">if</span> <span class="n">curr_sum</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># number of times the curr_sum − k has occurred already, </span>
+            <span class="c1"># determines the number of times a path with sum k </span>
+            <span class="c1"># has occurred up to the current node</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="n">h</span><span class="p">[</span><span class="n">curr_sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+
+            <span class="c1"># add the current sum into hashmap</span>
+            <span class="c1"># to use it during the child nodes processing</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">curr_sum</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># process left subtree</span>
+            <span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+            <span class="c1"># process right subtree</span>
+            <span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+
+            <span class="c1"># remove the current sum from the hashmap</span>
+            <span class="c1"># in order not to use it during </span>
+            <span class="c1"># the parallel subtree processing</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">curr_sum</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="n">count</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">target</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">preorder</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">count</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is a number of nodes. During preorder traversal, each node is visited once.</p>
+
+<p><strong>Space complexity</strong> : O(N) to keep the hashmap of prefix sums, where N is a number of nodes.</p>

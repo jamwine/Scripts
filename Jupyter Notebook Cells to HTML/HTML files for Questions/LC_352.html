@@ -1,0 +1,78 @@
+<h2>352. Data Stream as Disjoint Intervals</h2>
+
+<pre><code>Given a data stream input of non-negative integers a1, a2, ..., an, summarize the numbers seen so far as a list of disjoint intervals.
+
+Implement the SummaryRanges class:
+
+SummaryRanges() Initializes the object with an empty stream.
+void addNum(int val) Adds the integer val to the stream.
+int[][] getIntervals() Returns a summary of the integers in the stream currently as a list of disjoint intervals [starti, endi].
+
+
+Example 1:
+
+Input
+["SummaryRanges", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals"]
+[[], [1], [], [3], [], [7], [], [2], [], [6], []]
+Output
+[null, null, [[1, 1]], null, [[1, 1], [3, 3]], null, [[1, 1], [3, 3], [7, 7]], null, [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]
+
+Explanation
+SummaryRanges summaryRanges = new SummaryRanges();
+summaryRanges.addNum(1);      // arr = [1]
+summaryRanges.getIntervals(); // return [[1, 1]]
+summaryRanges.addNum(3);      // arr = [1, 3]
+summaryRanges.getIntervals(); // return [[1, 1], [3, 3]]
+summaryRanges.addNum(7);      // arr = [1, 3, 7]
+summaryRanges.getIntervals(); // return [[1, 1], [3, 3], [7, 7]]
+summaryRanges.addNum(2);      // arr = [1, 2, 3, 7]
+summaryRanges.getIntervals(); // return [[1, 3], [7, 7]]
+summaryRanges.addNum(6);      // arr = [1, 2, 3, 6, 7]
+summaryRanges.getIntervals(); // return [[1, 3], [6, 7]]
+
+
+Constraints:
+0 &lt;= val &lt;= 104
+At most 3 * 104 calls will be made to addNum and getIntervals.
+
+Follow up: What if there are lots of merges and the number of disjoint intervals is small compared to the size of the data stream?
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">SummaryRanges</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startWith</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># start: end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endWith</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># end: start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">addNum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="c1"># Check if any existing interval starts with val + 1.</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startWith</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="c1"># Check if any existing interval ends with val - 1.</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endWith</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="c1"># Add the new interval back to the memo dictionaries.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startWith</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endWith</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span>
+
+    <span class="k">def</span> <span class="nf">getIntervals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startWith</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>    
+
+<span class="c1"># Your SummaryRanges object will be instantiated and called as such:</span>
+<span class="c1"># obj = SummaryRanges()</span>
+<span class="c1"># obj.addNum(val)</span>
+<span class="c1"># param_2 = obj.getIntervals()</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1) for addNum() and O(NlogN) for getting all intervals, where N is the data stream</p>
+
+<p><strong>Space complexity</strong> : O(N), for dictionary and set.</p>

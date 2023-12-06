@@ -1,0 +1,55 @@
+<h2><a href="https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/">1171. Remove Zero Sum Consecutive Nodes from Linked List</a></h2>
+
+<pre><code>Given the head of a linked list, we repeatedly delete consecutive sequences of nodes that sum to 0 until there are no such sequences.
+
+After doing so, return the head of the final linked list.  You may return any such answer.
+
+Example 1:
+
+Input: head = [1,2,-3,3,1]
+Output: [3,1]
+Note: The answer [1,2,1] would also be accepted.
+
+Example 2: 
+
+Input: head = [1,2,3,-3,4]
+Output: [1,2,4]
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">removeZeroSumSublists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+
+        <span class="n">head</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">head</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">l1</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">prefix</span><span class="p">:</span><span class="n">head</span><span class="p">}</span> <span class="c1"># {prefix sum : last node of getting this sum value}</span>
+
+        <span class="k">while</span> <span class="n">l1</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">+=</span> <span class="n">l1</span><span class="o">.</span><span class="n">val</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="c1"># Second Iteration</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">l1</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">+=</span> <span class="n">l1</span><span class="o">.</span><span class="n">val</span>
+            <span class="n">l1</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), two pass algorithm, n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(n), for maintaining a dictionary</p>

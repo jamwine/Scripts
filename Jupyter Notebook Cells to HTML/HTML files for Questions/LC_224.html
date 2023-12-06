@@ -1,0 +1,98 @@
+<h2><a href="https://leetcode.com/problems/basic-calculator/">224. Basic Calculator</a></h2>
+
+<pre><code>Implement a basic calculator to evaluate a simple expression string.
+
+The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
+
+Example 1:
+
+Input: "1 + 1"
+Output: 2
+
+Example 2:
+
+Input: " 2-1 + 2 "
+Output: 3
+
+Example 3:
+
+Input: "(1+(4+5+2)-3)+(6+8)"
+Output: 23
+
+Note:
+You may assume that the given expression is always valid.
+Do not use the eval built-in library function.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">operand</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># For the on-going result</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># 1 means positive, -1 means negative  </span>
+
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+
+                <span class="c1"># Forming operand, since it could be more than one digit</span>
+                <span class="n">operand</span> <span class="o">=</span> <span class="p">(</span><span class="n">operand</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+
+                <span class="c1"># Evaluate the expression to the left,</span>
+                <span class="c1"># with result, sign, operand</span>
+                <span class="n">res</span> <span class="o">+=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">operand</span>
+
+                <span class="c1"># Save the recently encountered &#39;+&#39; sign</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="c1"># Reset operand</span>
+                <span class="n">operand</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+
+                <span class="n">res</span> <span class="o">+=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">operand</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">operand</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
+
+                <span class="c1"># Push the result and sign on to the stack, for later</span>
+                <span class="c1"># We push the result first, then sign</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sign</span><span class="p">)</span>
+
+                <span class="c1"># Reset sign and result, as if new evaluation begins for the new sub-expression</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+
+                <span class="c1"># Evaluate the expression to the left</span>
+                <span class="c1"># with result, sign and operand</span>
+                <span class="n">res</span> <span class="o">+=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">operand</span>
+
+                <span class="c1"># &#39;)&#39; marks end of expression within a set of parenthesis</span>
+                <span class="c1"># Its result is multiplied with sign on top of stack</span>
+                <span class="c1"># as stack.pop() is the sign before the parenthesis</span>
+                <span class="n">res</span> <span class="o">*=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># stack pop 1, sign</span>
+
+                <span class="c1"># Then add to the next operand on the top.</span>
+                <span class="c1"># as stack.pop() is the result calculated before this parenthesis</span>
+                <span class="c1"># (operand on stack) + (sign on stack * (result from parenthesis))</span>
+                <span class="n">res</span> <span class="o">+=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># stack pop 2, operand</span>
+
+                <span class="c1"># Reset the operand</span>
+                <span class="n">operand</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">res</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">operand</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), where n is the length of the string.</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

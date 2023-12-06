@@ -1,0 +1,68 @@
+<h2><a href="https://leetcode.com/problems/largest-rectangle-in-histogram/">84. Largest Rectangle in Histogram</a></h2>
+
+<pre><code>Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/84.1.png" alt="84_1.png"></p>
+
+<pre><code>Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].
+</code></pre>
+
+<p><img width="10%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/84.2.png" alt="84_2.png"></p>
+
+<pre><code>The largest rectangle is shown in the shaded area, which has area = 10 unit. 
+
+Example:
+
+Input: [2,1,5,6,2,3]
+Output: 10
+</code></pre>
+
+<p>|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/head.png" alt="wh" />|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/head.png" alt="wh" />|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/head.png" alt="wh" />|
+|-|-|-|
+|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/84_3.jpeg" alt="84<em>3" />|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/84_4.jpeg" alt="84</em>4" />|<img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/84_5.jpeg" alt="84_5" />|</p>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">largestRectangleArea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">max_area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># maintain a stack of indexes, add index into stack if the new height is bigger than the previous height</span>
+        <span class="c1"># For the first iteration, there&#39;s no element inside the stack for comparision</span>
+
+        <span class="c1"># Appending 0 in the height, so that the stack gets filled during the first comparision (Helper)</span>
+        <span class="n">height</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Since the appended 0 is in the last position of height array, adding -1 in the stack to access it</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Stack&#39;s top element represents the index of maximum height</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height</span><span class="p">)):</span>
+
+            <span class="c1"># if the new height is smaller than the previous height (stack&#39;s top index), pop index from the stack </span>
+            <span class="k">while</span> <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+
+                <span class="c1"># calculate height from the popped index</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">height</span><span class="p">[</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
+
+                <span class="c1"># calculate width using the last position (i-1) and stack&#39;s top index</span>
+                <span class="c1"># width is computed as (last_idx - stack&#39;s top index)</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+
+                <span class="n">max_area</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_area</span><span class="p">,</span> <span class="n">h</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span>
+
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># Removing the extra 0 from the height array which was appended initially</span>
+        <span class="n">height</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">max_area</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n). n numbers are pushed and popped.</p>
+
+<p><strong>Space complexity</strong> : O(n). Stack is used.</p>

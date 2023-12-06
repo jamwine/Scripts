@@ -1,0 +1,68 @@
+<h2>1574. Shortest Subarray to be Removed to Make Array Sorted</h2>
+
+<pre><code>Given an integer array arr, remove a subarray (can be empty) from arr such that the remaining elements in arr are non-decreasing.
+
+A subarray is a contiguous subsequence of the array. Return the length of the shortest subarray to remove.
+
+Example 1:
+Input: arr = [1,2,3,10,4,2,3,5]
+Output: 3
+Explanation: The shortest subarray we can remove is [10,4,2] of length 3. The remaining elements after that will be [1,2,3,3,5] which are sorted.
+Another correct solution is to remove the subarray [3,10,4].
+
+Example 2:
+Input: arr = [5,4,3,2,1]
+Output: 4
+Explanation: Since the array is strictly decreasing, we can only keep a single element. Therefore we need to remove a subarray of length 4, either [5,4,3,2] or [4,3,2,1].
+
+Example 3:
+Input: arr = [1,2,3]
+Output: 0
+Explanation: The array is already non-decreasing. We do not need to remove any elements.
+
+Example 4:
+Input: arr = [1]
+Output: 0 
+
+Constraints:
+1 &lt;= arr.length &lt;= 10^5
+0 &lt;= arr[i] &lt;= 10^9
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">findLengthOfShortestSubarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">low</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">low</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">low</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">low</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
+            <span class="n">low</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">low</span> <span class="o">==</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">high</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">high</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">high</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">high</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]):</span>
+            <span class="n">high</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">high</span><span class="p">)</span>
+
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">high</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">low</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">right</span><span class="p">]:</span>
+                <span class="n">ans</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+                <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N are the total elements in an array</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

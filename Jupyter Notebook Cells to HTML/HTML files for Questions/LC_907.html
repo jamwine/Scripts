@@ -1,0 +1,62 @@
+<h2><a href="https://leetcode.com/problems/sum-of-subarray-minimums/">907. Sum of Subarray Minimums</a></h2>
+
+<pre><code>Given an array of integers arr, find the sum of min(b), where b ranges over every (contiguous) subarray of arr. Since the answer may be large, return the answer modulo 109 + 7.
+
+
+Example 1:
+Input: arr = [3,1,2,4]
+Output: 17
+Explanation: 
+Subarrays are [3], [1], [2], [4], [3,1], [1,2], [2,4], [3,1,2], [1,2,4], [3,1,2,4]. 
+Minimums are 3, 1, 2, 4, 1, 1, 2, 1, 1, 1.
+Sum is 17.
+
+
+Example 2:
+Input: arr = [11,81,94,43,3]
+Output: 444
+
+
+Constraints:
+1 &lt;= arr.length &lt;= 3 * 104
+1 &lt;= arr[i] &lt;= 3 * 104
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">sumSubarrayMins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Example : [ 3 , 1 , 2 , 4]</span>
+<span class="sd">        here 3 is going to end in 1 subarray -&gt; [3]</span>
+<span class="sd">        here 1 is going to end in 2 subarray -&gt; [3,1] , [1]</span>
+<span class="sd">        here 2 is going to end in 3 subarray -&gt; [3,1,2] , [1,2] , [2]</span>
+<span class="sd">        here 4 is going to end in 4 subarray -&gt; [3,1,2,4] , [1,2,4] ,[2,4] , [4]</span>
+
+<span class="sd">        to find the minimum :</span>
+<span class="sd">        for 3 : 3 </span>
+<span class="sd">        for 1 : 1,1</span>
+<span class="sd">        for 2 : 1,1,2</span>
+<span class="sd">        for 4 : 1,1,2,4</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Appending 0 in the end, so that every element becomes &lt; 0 in last iteration</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span> 
+            <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">num</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+                <span class="n">top_idx</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+                <span class="c1"># ...left...idx...right..., so total (idx - left) * (right - idx) subarrays</span>
+                <span class="n">left</span> <span class="o">=</span> <span class="n">top_idx</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">stack</span> <span class="k">else</span> <span class="n">top_idx</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">right</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">top_idx</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">left</span> <span class="o">*</span> <span class="n">right</span> <span class="o">*</span> <span class="n">arr</span><span class="p">[</span><span class="n">top_idx</span><span class="p">]</span>
+
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>        
+        <span class="k">return</span> <span class="n">result</span> <span class="o">%</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

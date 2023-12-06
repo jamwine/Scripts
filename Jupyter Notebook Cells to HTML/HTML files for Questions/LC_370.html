@@ -1,0 +1,63 @@
+<h2><a href="https://leetcode.com/problems/range-addition/">370. Range Addition</a></h2>
+
+<pre><code>You are given an integer length and an array updates where updates[i] = [startIdxi, endIdxi, inci].
+
+You have an array arr of length length with all zeros, and you have some operation to apply on arr. In the ith operation, you should increment all the elements arr[startIdxi], arr[startIdxi + 1], ..., arr[endIdxi] by inci.
+
+Return arr after applying all the updates.
+
+
+Example 1:
+Input: length = 5, updates = [[1,3,2],[2,4,3],[0,2,-2]]
+Output: [-2,0,3,5,3]
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/370.jpg" alt="370.png"></p>
+
+<pre><code>
+Example 2:
+Input: length = 10, updates = [[2,4,6],[5,6,8],[1,9,-4]]
+Output: [0,-4,2,2,2,4,4,-4,-4,-4]
+
+
+Constraints:
+1 &lt;= length &lt;= 105
+0 &lt;= updates.length &lt;= 104
+0 &lt;= startIdxi &lt;= endIdxi &lt; length
+-1000 &lt;= inci &lt;= 1000
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">getModifiedArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">updates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length</span>
+
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">inc</span> <span class="ow">in</span> <span class="n">updates</span><span class="p">:</span>
+
+            <span class="c1"># update the start position with inc</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">+=</span> <span class="n">inc</span>
+
+            <span class="c1"># update the (end+1) position with -inc, this stops updating the next addition outside range</span>
+            <span class="k">if</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">inc</span>
+
+        <span class="c1"># For Input: length = 10, updates = [[2,4,6],[5,6,8],[1,9,-4]]</span>
+        <span class="c1"># result =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</span>
+        <span class="c1"># (2, 4, 6) [0, 0, 6, 0, 0, -6, 0, 0, 0, 0]</span>
+        <span class="c1"># (5, 6, 8) [0, 0, 6, 0, 0, 2, 0, -8, 0, 0]</span>
+        <span class="c1"># (1, 9,-4) [0,-4, 6, 0, 0, 2, 0, -8, 0, 0]</span>
+
+        <span class="c1"># add the previous result to the current result for updating inc within the given range</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># result = [0, -4, 2, 2, 2, 4, 4, -4, -4, -4]</span>
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), where n represents the length</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

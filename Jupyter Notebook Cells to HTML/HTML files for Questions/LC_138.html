@@ -1,0 +1,109 @@
+<h2>138. Copy List with Random Pointer</h2>
+
+<pre><code>A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+
+Return a deep copy of the list.
+
+The Linked List is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
+
+val: an integer representing Node.val
+random_index: the index of the node (range from 0 to n-1) where random pointer points to, or null if it does not point to any node.
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/138.1.png" alt="138.1.png" /></p>
+
+<pre><code>Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+Example 2:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/138.2.png" alt="138.1.png" /></p>
+
+<pre><code>Input: head = [[1,1],[2,1]]
+Output: [[1,1],[2,1]]
+
+Example 3:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/138.3.png" alt="138.1.png" /></p>
+
+<pre><code>Input: head = [[3,null],[3,0],[3,null]]
+Output: [[3,null],[3,0],[3,null]]
+
+Example 4:
+
+Input: head = []
+Output: []
+Explanation: Given linked list is empty (null pointer), so return null.
+
+Constraints:
+
+-10000 &lt;= Node.val &lt;= 10000
+Node.random is null or pointing to a node in the linked list.
+Number of Nodes will not exceed 1000.  
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Definition for a Node.</span>
+<span class="sd">class Node:</span>
+<span class="sd">    def __init__(self, x: int, next: &#39;Node&#39; = None, random: &#39;Node&#39; = None):</span>
+<span class="sd">        self.val = int(x)</span>
+<span class="sd">        self.next = next</span>
+<span class="sd">        self.random = random</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">copyRandomList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type head: Node</span>
+<span class="sd">        :rtype: Node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">head</span>
+
+        <span class="c1"># Creating a new weaved list of original and copied nodes.</span>
+        <span class="n">ptr</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">ptr</span><span class="p">:</span>
+
+            <span class="c1"># Cloned node</span>
+            <span class="n">new_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">ptr</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="c1"># Inserting the cloned node just next to the original node.</span>
+            <span class="c1"># If A-&gt;B-&gt;C is the original linked list,</span>
+            <span class="c1"># Linked list after weaving cloned nodes would be A-&gt;A&#39;-&gt;B-&gt;B&#39;-&gt;C-&gt;C&#39;</span>
+            <span class="n">new_node</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ptr</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">ptr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_node</span>
+            <span class="n">ptr</span> <span class="o">=</span> <span class="n">new_node</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="n">ptr</span> <span class="o">=</span> <span class="n">head</span>
+
+        <span class="c1"># Now link the random pointers of the new nodes created.</span>
+        <span class="c1"># Iterate the newly created list and use the original nodes random pointers,</span>
+        <span class="c1"># to assign references to random pointers for cloned nodes.</span>
+        <span class="k">while</span> <span class="n">ptr</span><span class="p">:</span>
+            <span class="n">ptr</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">ptr</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">ptr</span><span class="o">.</span><span class="n">random</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">ptr</span> <span class="o">=</span> <span class="n">ptr</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+
+        <span class="c1"># Unweave the linked list to get back the original linked list and the cloned list.</span>
+        <span class="c1"># i.e. A-&gt;A&#39;-&gt;B-&gt;B&#39;-&gt;C-&gt;C&#39; would be broken to A-&gt;B-&gt;C and A&#39;-&gt;B&#39;-&gt;C&#39;</span>
+        <span class="n">ptr_old_list</span> <span class="o">=</span> <span class="n">head</span> <span class="c1"># A-&gt;B-&gt;C</span>
+        <span class="n">ptr_new_list</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span> <span class="c1"># A&#39;-&gt;B&#39;-&gt;C&#39;</span>
+        <span class="n">head_copy</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">while</span> <span class="n">ptr_old_list</span><span class="p">:</span>
+            <span class="n">ptr_old_list</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ptr_old_list</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">ptr_new_list</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ptr_new_list</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">ptr_new_list</span><span class="o">.</span><span class="n">next</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">ptr_old_list</span> <span class="o">=</span> <span class="n">ptr_old_list</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">ptr_new_list</span> <span class="o">=</span> <span class="n">ptr_new_list</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">head_copy</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> :  O(N)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

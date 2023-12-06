@@ -1,0 +1,83 @@
+<h2><a href="https://leetcode.com/problems/search-suggestions-system/">1268. Search Suggestions System</a></h2>
+
+<pre><code>Given an array of strings products and a string searchWord. We want to design a system that suggests at most three product names from products after each character of searchWord is typed. Suggested products should have common prefix with the searchWord. If there are more than three products with a common prefix return the three lexicographically minimums products.
+
+Return list of lists of the suggested products after each character of searchWord is typed.
+
+Example 1:
+
+Input: products = ["mobile","mouse","moneypot","monitor","mousepad"], searchWord = "mouse"
+Output: [
+["mobile","moneypot","monitor"],
+["mobile","moneypot","monitor"],
+["mouse","mousepad"],
+["mouse","mousepad"],
+["mouse","mousepad"]
+]
+Explanation: products sorted lexicographically = ["mobile","moneypot","monitor","mouse","mousepad"]
+After typing m and mo all products match and we show user ["mobile","moneypot","monitor"]
+After typing mou, mous and mouse the system suggests ["mouse","mousepad"]
+
+Example 2:
+
+Input: products = ["havana"], searchWord = "havana"
+Output: [["havana"],["havana"],["havana"],["havana"],["havana"],["havana"]]
+
+Example 3:
+
+Input: products = ["bags","baggage","banner","box","cloths"], searchWord = "bags"
+Output: [["baggage","bags","banner"],["baggage","bags","banner"],["baggage","bags"],["bags"]]
+
+Example 4:
+
+Input: products = ["havana"], searchWord = "tatiana"
+Output: [[],[],[],[],[],[],[]]
+
+Constraints:
+
+1 &lt;= products.length &lt;= 1000
+There are no repeated elements in products.
+1 &lt;= Σ products[i].length &lt;= 2 * 10^4
+All characters of products[i] are lower-case English letters.
+1 &lt;= searchWord.length &lt;= 1000
+All characters of searchWord are lower-case English letters.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">suggestedProducts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">products</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">searchWord</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="n">products</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> 
+        <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">input_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">searchWord</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">input_str</span> <span class="o">+=</span> <span class="n">ch</span>
+
+            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_search</span><span class="p">(</span><span class="n">products</span><span class="p">,</span> <span class="n">input_str</span><span class="p">)</span> <span class="c1"># insertion index</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">),</span> <span class="n">start</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># cannot be more than 3 words (indices)</span>
+
+            <span class="c1"># loop from insertion index where input_str is first encountered</span>
+            <span class="k">for</span> <span class="n">word_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">products</span><span class="p">[</span><span class="n">word_idx</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">input_str</span><span class="p">):</span>
+                    <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">products</span><span class="p">[</span><span class="n">word_idx</span><span class="p">])</span>
+            <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ans</span>
+
+    <span class="k">def</span> <span class="nf">binary_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span> 
+        <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span><span class="mi">2</span>
+            <span class="k">if</span> <span class="n">array</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span> <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+        <span class="k">return</span> <span class="n">lo</span>  
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(len(searchWord)log(len(products)))</p>
+
+<p><strong>Space complexity</strong> : O(len(products))</p>

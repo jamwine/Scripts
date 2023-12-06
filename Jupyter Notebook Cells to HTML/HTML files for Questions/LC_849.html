@@ -1,0 +1,65 @@
+<h2>849. Maximize Distance to Closest Person</h2>
+
+<pre><code>You are given an array representing a row of seats where seats[i] = 1 represents a person sitting in the ith seat, and seats[i] = 0 represents that the ith seat is empty (0-indexed).
+
+There is at least one empty seat, and at least one person sitting.
+Alex wants to sit in the seat such that the distance between him and the closest person to him is maximized. 
+Return that maximum distance to the closest person.
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/849.jpg" alt="849.jpg" /></p>
+
+<pre><code>Input: seats = [1,0,0,0,1,0,1]
+Output: 2
+Explanation: 
+If Alex sits in the second open seat (i.e. seats[2]), then the closest person has distance 2.
+If Alex sits in any other open seat, the closest person has distance 1.
+Thus, the maximum distance to the closest person is 2.
+
+Example 2:
+Input: seats = [1,0,0,0]
+Output: 3
+Explanation: 
+If Alex sits in the last seat (i.e. seats[3]), the closest person is 3 seats away.
+This is the maximum distance possible, so the answer is 3.
+
+Example 3:
+Input: seats = [0,1]
+Output: 1
+
+
+Constraints:
+2 &lt;= seats.length &lt;= 2 * 104
+seats[i] is 0 or 1.
+At least one seat is empty.
+At least one seat is occupied.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maxDistToClosest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">prev</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">cur</span><span class="p">,</span> <span class="n">seat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seats</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">seat</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">seats</span><span class="p">[</span><span class="n">prev</span><span class="p">]:</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="p">(</span><span class="n">cur</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="p">(</span><span class="n">cur</span> <span class="o">-</span> <span class="n">prev</span><span class="p">))</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span>
+
+        <span class="k">if</span> <span class="n">seats</span><span class="p">[</span><span class="n">prev</span><span class="p">]:</span> 
+            <span class="n">dist</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seats</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span> 
+
+        <span class="k">return</span> <span class="n">dist</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N are the total number of seats.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

@@ -1,0 +1,56 @@
+<h2><a href="https://leetcode.com/problems/reorganize-string/">767. Reorganize String</a></h2>
+
+<pre><code>Given a string S, check if the letters can be rearranged so that two characters that are adjacent to each other are not the same.
+
+If possible, output any possible result.  If not possible, return the empty string.
+
+Example 1:
+
+Input: S = "aab"
+Output: "aba"
+
+Example 2:
+
+Input: S = "aaab"
+Output: ""
+
+Note:
+
+S will consist of lowercase letters and have length in range [1, 500].
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">reorganizeString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">d</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">S</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="n">max_heap</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="n">freq</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">max_heap</span><span class="p">)</span>
+
+        <span class="n">prev_count</span><span class="p">,</span> <span class="n">prev_letter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">while</span> <span class="n">max_heap</span><span class="p">:</span>
+            <span class="n">count</span><span class="p">,</span> <span class="n">letter</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">max_heap</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="n">count</span> <span class="c1"># restoring frequency (was negative initially due to max_heap)</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">letter</span>
+
+            <span class="c1"># pushing the previous character in max_heap (alternate insertion)</span>
+            <span class="k">if</span> <span class="n">prev_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">max_heap</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">prev_count</span><span class="p">,</span> <span class="n">prev_letter</span><span class="p">))</span> 
+
+            <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">prev_count</span><span class="p">,</span> <span class="n">prev_letter</span> <span class="o">=</span> <span class="n">count</span><span class="p">,</span> <span class="n">letter</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n + m log m), n is the length of the string, m are the unique characters in the string</p>
+
+<p><strong>Space complexity</strong> : O(m)</p>

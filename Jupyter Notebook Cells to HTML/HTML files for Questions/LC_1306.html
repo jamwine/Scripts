@@ -1,0 +1,83 @@
+<h2><a href="https://leetcode.com/problems/jump-game-iii/">1306. Jump Game III</a></h2>
+
+<pre><code>Given an array of non-negative integers arr, you are initially positioned at start index of the array. When you are at index i, you can jump to i + arr[i] or i - arr[i], check if you can reach to any index with value 0.
+
+Notice that you can not jump outside of the array at any time.
+
+Example 1:
+Input: arr = [4,2,3,0,3,1,2], start = 5
+Output: true
+Explanation: 
+All possible ways to reach at index 3 with value 0 are: 
+index 5 -&gt; index 4 -&gt; index 1 -&gt; index 3 
+index 5 -&gt; index 6 -&gt; index 4 -&gt; index 1 -&gt; index 3 
+
+Example 2:
+Input: arr = [4,2,3,0,3,1,2], start = 0
+Output: true 
+Explanation: 
+One possible way to reach at index 3 with value 0 is: 
+index 0 -&gt; index 4 -&gt; index 1 -&gt; index 3
+
+Example 3:
+Input: arr = [3,0,2,1,2], start = 2
+Output: false
+Explanation: There is no way to reach at index 1 with value 0.
+
+Constraints:
+1 &lt;= arr.length &lt;= 5 * 10^4
+0 &lt;= arr[i] &lt; arr.length
+0 &lt;= start &lt; arr.length
+</code></pre>
+
+<h3>Solution: BFS</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">canReach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># check if reach zero</span>
+            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># check available next steps            </span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="n">node</span> <span class="o">-</span> <span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">]]:</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                    <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="c1"># mark as visited</span>
+            <span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">arr</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N) since we will visit every index at most once.</p>
+
+<p><strong>Space complexity</strong> : O(N) since it needs q to store next index. </p>
+
+<h3>Solution: DFS</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">canReach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="c1"># mark as visited</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">canReach</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">])</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">canReach</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">start</span><span class="o">-</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N) since we will visit every index at most once.</p>
+
+<p><strong>Space complexity</strong> : O(N) since it needs at most O(N) stacks for recursions.</p>

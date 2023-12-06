@@ -1,0 +1,61 @@
+<h2><a href="https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/">1151. Minimum Swaps to Group All 1's Together</a></h2>
+
+<pre><code>Given a binary array data, return the minimum number of swaps required to group all 1’s present in the array together in any place in the array.
+
+
+Example 1:
+Input: data = [1,0,1,0,1]
+Output: 1
+Explanation: There are 3 ways to group all 1's together:
+[1,1,1,0,0] using 1 swap.
+[0,1,1,1,0] using 2 swaps.
+[0,0,1,1,1] using 1 swap.
+The minimum is 1.
+
+
+Example 2:
+Input: data = [0,0,0,1,0]
+Output: 0
+Explanation: Since there is only one 1 in the array, no swaps are needed.
+
+
+Example 3:
+Input: data = [1,0,1,0,1,0,0,1,1,0,1]
+Output: 3
+Explanation: One possible solution that uses 3 swaps is [0,0,0,0,0,1,1,1,1,1,1].
+
+
+Constraints:
+1 &lt;= data.length &lt;= 105
+data[i] is either 0 or 1.
+</code></pre>
+
+<h3>Solution1</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minSwaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">window_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1"># window size is the count of total ones in data</span>
+        <span class="n">ones</span> <span class="o">=</span> <span class="n">max_ones</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">while</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+
+            <span class="c1"># increase the window size, add the right digit</span>
+            <span class="n">ones</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">right</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># decrease the window size, remove the left digit</span>
+            <span class="k">if</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&gt;</span> <span class="n">window_size</span><span class="p">:</span>
+                <span class="n">ones</span> <span class="o">-=</span> <span class="n">data</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+                <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># record the maximum number of 1&#39;s in the window</span>
+            <span class="n">max_ones</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_ones</span><span class="p">,</span> <span class="n">ones</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">window_size</span> <span class="o">-</span> <span class="n">max_ones</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), N is the length of bigger string</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

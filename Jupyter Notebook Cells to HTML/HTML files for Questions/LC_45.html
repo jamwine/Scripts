@@ -1,0 +1,48 @@
+<h2><a href="https://leetcode.com/problems/jump-game-ii/">45. Jump Game II</a></h2>
+
+<pre><code>Given an array of non-negative integers nums, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+Your goal is to reach the last index in the minimum number of jumps.
+You can assume that you can always reach the last index.
+
+
+Example 1:
+Input: nums = [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+Example 2:
+Input: nums = [2,3,0,1,4]
+Output: 2
+
+
+Constraints:
+1 &lt;= nums.length &lt;= 3 * 104
+0 &lt;= nums[i] &lt;= 105
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># no jumps, only one element</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">max_pos</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">jumps</span><span class="o">=</span><span class="mi">1</span>
+        <span class="n">steps</span><span class="o">=</span><span class="n">max_pos</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">steps</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">:</span> 
+                <span class="n">jumps</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">steps</span><span class="o">=</span><span class="n">max_pos</span>
+            <span class="n">max_pos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_pos</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">jumps</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n), where n is the length of array nums</p>
+
+<p><strong>Space complexity</strong> : O(1). We are not using any extra memory.</p>

@@ -1,0 +1,54 @@
+<h2>147. Insertion Sort List</h2>
+
+<pre><code>Sort a linked list using insertion sort.
+
+Algorithm:
+1) Insertion sort iterates, consuming one input element each repetition, and growing a sorted output list.
+2) At each iteration, insertion sort removes one element from the input data, finds the location it belongs within the sorted list, and inserts it there.
+3) It repeats until no input elements remain.
+
+Example 1:
+
+Input: 4-&gt;2-&gt;1-&gt;3
+Output: 1-&gt;2-&gt;3-&gt;4
+
+Example 2:
+
+Input: -1-&gt;5-&gt;3-&gt;4-&gt;0
+Output: -1-&gt;0-&gt;3-&gt;4-&gt;5
+
+</code></pre>
+
+<p><img width="30%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/147.gif" alt="147.gif"></p>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, val=0, next=None):</span>
+<span class="c1">#         self.val = val</span>
+<span class="c1">#         self.next = next</span>
+
+<span class="k">def</span> <span class="nf">insertionSortList</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span>
+    <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">node</span><span class="p">,</span> <span class="n">head</span>
+    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">curr</span><span class="o">.</span><span class="n">val</span> <span class="o">&gt;</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">prev</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">prev</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span> <span class="o">&lt;</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">prev</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+            <span class="n">prev</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+    <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">next</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n^2), where n is the number of nodes in the linked list.</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

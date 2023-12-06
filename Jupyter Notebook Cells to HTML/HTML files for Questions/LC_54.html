@@ -1,0 +1,59 @@
+<h2><a href="https://leetcode.com/problems/spiral-matrix/">54. Spiral Matrix</a></h2>
+
+<pre><code>Given an m x n matrix, return all elements of the matrix in spiral order.
+
+Example 1:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/54.1.jpg" alt="54.1.jpg"></p>
+
+<pre><code>Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5]
+
+Example 2:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/54.2.jpg" alt="54.2.jpg"></p>
+
+<pre><code>Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+Constraints:
+m == matrix.length
+n == matrix[i].length
+1 &lt;= m, n &lt;= 10
+-100 &lt;= matrix[i][j] &lt;= 100
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">spiralOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">spiral_coords</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">r1</span><span class="p">,</span> <span class="n">c</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">r</span><span class="p">,</span> <span class="n">c2</span>
+            <span class="k">if</span> <span class="n">r1</span> <span class="o">&lt;</span> <span class="n">r2</span> <span class="ow">and</span> <span class="n">c1</span> <span class="o">&lt;</span> <span class="n">c2</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">r2</span><span class="p">,</span> <span class="n">c</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">r</span><span class="p">,</span> <span class="n">c1</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matrix</span><span class="p">:</span> <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">r1</span> <span class="o">&lt;=</span> <span class="n">r2</span> <span class="ow">and</span> <span class="n">c1</span> <span class="o">&lt;=</span> <span class="n">c2</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">spiral_coords</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+                <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">])</span>
+            <span class="n">r1</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">r2</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">c1</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">c2</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N), where N is the total number of elements in the input matrix</p>
+
+<p><strong>Space complexity</strong> : O(N) if the output array is taken into account.</p>

@@ -1,0 +1,50 @@
+<h2><a href="https://leetcode.com/problems/trapping-rain-water/">42. Trapping Rain Water</a></h2>
+
+<pre><code>Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+
+Example 1:
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/42.png" alt="42.png" /></p>
+
+<pre><code>Input: [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">trap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">totalWater</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">leftMax</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># each index has a left and right building, will be 0 in case of first index</span>
+        <span class="n">leftMax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># leftMax represents the unrealistic total height of elevation (L -&gt; R)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">leftMax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">leftMax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="n">rightMax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># rightMax represents the unrealistic total height of elevation (R -&gt; L)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height</span><span class="p">))):</span>
+            <span class="n">rightMax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rightMax</span><span class="p">,</span> <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="c1"># The gap represents the height filled with water: min(leftMax, rightMax)</span>
+            <span class="n">gap</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">leftMax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rightMax</span><span class="p">)</span>
+
+            <span class="c1"># Difference between gap and actual height provides the stored water</span>
+            <span class="k">if</span> <span class="n">gap</span> <span class="o">&gt;</span> <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">totalWater</span> <span class="o">+=</span> <span class="n">gap</span> <span class="o">-</span> <span class="n">height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+
+        <span class="k">return</span> <span class="n">totalWater</span>  
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n)</p>
+
+<p><strong>Space complexity</strong> : O(n)</p>

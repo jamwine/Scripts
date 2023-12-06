@@ -1,0 +1,63 @@
+<h2><a href="https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/">1567. Maximum Length of Subarray With Positive Product</a></h2>
+
+<pre><code>Given an array of integers nums, find the maximum length of a subarray where the product of all its elements is positive.
+
+A subarray of an array is a consecutive sequence of zero or more values taken out of that array.
+
+Return the maximum length of a subarray with positive product.
+
+
+Example 1:
+Input: nums = [1,-2,-3,4]
+Output: 4
+Explanation: The array nums already has a positive product of 24.
+
+
+Example 2:
+Input: nums = [0,1,-2,-3,-4]
+Output: 3
+Explanation: The longest subarray with positive product is [1,-2,-3] which has a product of 6.
+Notice that we cannot include 0 in the subarray since that'll make the product 0 which is not positive.
+
+
+Example 3:
+Input: nums = [-1,-2,-3,0,1]
+Output: 2
+Explanation: The longest subarray with positive product is [-1,-2] or [-2,-3].
+
+
+Constraints:
+1 &lt;= nums.length &lt;= 105
+-109 &lt;= nums[i] &lt;= 109
+</code></pre>
+
+<h3>Solution</h3>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1567.jpeg" alt="1567.jpeg"></p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    if num == 0 -&gt; Reset the subarrays </span>
+<span class="sd">    if num &gt; 0 -&gt; +ve subarray remains +ve and -ve remains -ve after adding the new value</span>
+<span class="sd">    if num &lt; 0 -&gt; +ve subarray becomes -ve and -ve becomes +ve after adding the new value due to sign reversal.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">getMaxLen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># maximum length of subarray with +ve product that ends with current element</span>
+        <span class="n">neg</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># maximum length of subarray with -ve product that ends with current element</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">,</span> <span class="n">neg</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">neg</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">neg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">neg</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">neg</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">neg</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">,</span> <span class="n">neg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(N)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

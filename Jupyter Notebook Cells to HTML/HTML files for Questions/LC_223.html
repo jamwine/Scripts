@@ -1,0 +1,36 @@
+<h2><a href="https://leetcode.com/problems/rectangle-area/">223. Rectangle Area</a></h2>
+
+<pre><code>Find the total area covered by two rectilinear rectangles in a 2D plane.
+
+Each rectangle is defined by its bottom left corner and top right corner.
+</code></pre>
+
+<p><img width="40%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/223.png" alt="223.png"></p>
+
+<pre><code>Example:
+
+Input: A = -3, B = 0, C = 3, D = 4, E = 0, F = -1, G = 9, H = 2
+Output: 45
+Note:
+
+Assume that the total area is never beyond the maximum possible value of int.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">computeArea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">C</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">E</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">F</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">G</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="p">(</span><span class="n">C</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">B</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">G</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">H</span> <span class="o">-</span> <span class="n">F</span><span class="p">)</span>
+
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">E</span><span class="p">))</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">total</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(1)</p>
+
+<p><strong>Space complexity</strong> : O(1)</p>

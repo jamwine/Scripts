@@ -1,0 +1,94 @@
+<h2><a href="https://leetcode.com/problems/shortest-path-to-get-food/">1730. Shortest Path to Get Food</a></h2>
+
+<pre><code>You are starving and you want to eat food as quickly as possible. You want to find the shortest path to arrive at any food cell.
+
+You are given an m x n character matrix, grid, of these different types of cells:
+
+'*' is your location. There is exactly one '*' cell.
+'#' is a food cell. There may be multiple food cells.
+'O' is free space, and you can travel through these cells.
+'X' is an obstacle, and you cannot travel through these cells.
+You can travel to any adjacent cell north, east, south, or west of your current location if there is not an obstacle.
+
+Return the length of the shortest path for you to reach any food cell. If there is no path for you to reach food, return -1.
+
+
+Example 1:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1730_1.jpg" alt="1730_1.jpg"></p>
+
+<pre><code>Input: grid = [["X","X","X","X","X","X"],["X","*","O","O","O","X"],["X","O","O","#","O","X"],["X","X","X","X","X","X"]]
+Output: 3
+Explanation: It takes 3 steps to reach the food.
+
+
+Example 2:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1730_2.jpg" alt="1730_2.jpg"></p>
+
+<pre><code>Input: grid = [["X","X","X","X","X"],["X","*","X","O","X"],["X","O","X","#","X"],["X","X","X","X","X"]]
+Output: -1
+Explanation: It is not possible to reach the food.
+
+
+Example 3:
+</code></pre>
+
+<p><img width="20%" src="https://raw.githubusercontent.com/jamwine/Data-Structures-and-Algorithm/master/InterviewImages/1730_3.jpg" alt="1730_3.jpg"></p>
+
+<pre><code>Input: grid = [["X","X","X","X","X","X","X","X"],["X","*","O","X","O","#","O","X"],["X","O","O","X","O","O","X","X"],["X","O","O","O","O","#","O","X"],["X","X","X","X","X","X","X","X"]]
+Output: 6
+Explanation: There can be multiple food cells. It only takes 6 steps to reach the bottom food.
+
+
+Constraints:
+m == grid.length
+n == grid[i].length
+1 &lt;= m, n &lt;= 200
+grid[row][col] is '*', 'X', 'O', or '#'.
+The grid contains exactly one '*'.
+</code></pre>
+
+<h3>Solution</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">getFood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">bfs</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span>
+            <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+            <span class="n">queue</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+
+            <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">steps</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="c1"># Food found - termination condition. &#39;#&#39; is food</span>
+                <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="n">steps</span>
+
+                <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+                    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">nx</span><span class="o">&lt;</span><span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span><span class="o">&lt;=</span><span class="n">ny</span><span class="o">&lt;</span><span class="n">cols</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+                        <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">steps</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="c1"># Food cannot be found/reached</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># Main function</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="c1"># Start at the starting location &#39;*&#39;</span>
+                <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">bfs</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> :  O(MN) where M,N is the size of grid</p>
+
+<p><strong>Space complexity</strong> : O(MN)</p>

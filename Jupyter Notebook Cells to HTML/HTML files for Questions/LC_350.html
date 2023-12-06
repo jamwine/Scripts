@@ -1,0 +1,101 @@
+<h2><a href="https://leetcode.com/problems/intersection-of-two-arrays-ii/">350. Intersection of Two Arrays II</a></h2>
+
+<pre><code>Given two arrays, write a function to compute their intersection.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+
+Note:
+Each element in the result should appear as many times as it shows in both arrays.
+The result can be in any order.
+
+Follow up:
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+</code></pre>
+
+<h3>Solution 1: Using Hashmap</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">nums2</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span><span class="o">&gt;</span><span class="nb">len</span><span class="p">(</span><span class="n">nums2</span><span class="p">):</span>
+            <span class="n">nums1</span><span class="p">,</span><span class="n">nums2</span><span class="o">=</span><span class="n">nums2</span><span class="p">,</span><span class="n">nums1</span>
+
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums1</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">counts</span> <span class="ow">and</span> <span class="n">counts</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">res</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(n+m), where n and m are arrays' lengths.</p>
+
+<p><strong>Space complexity</strong> : O(min(n,m)). We use hash map to store numbers (and their counts) from the smaller array.</p>
+
+<h3>Solution 2: Sort</h3>
+
+<div class="codehilite">
+<pre><span></span><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
+
+        <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nums1</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nums2</span><span class="p">)</span>
+        <span class="n">pt1</span> <span class="o">=</span> <span class="n">pt2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nums1</span><span class="p">[</span><span class="n">pt1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums2</span><span class="p">[</span><span class="n">pt2</span><span class="p">]:</span>
+                    <span class="n">pt2</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">nums1</span><span class="p">[</span><span class="n">pt1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums2</span><span class="p">[</span><span class="n">pt2</span><span class="p">]:</span>
+                    <span class="n">pt1</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nums1</span><span class="p">[</span><span class="n">pt1</span><span class="p">])</span>
+                    <span class="n">pt1</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">pt2</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">res</span>
+</code></pre>
+</div>
+
+<p><strong>Time complexity</strong> : O(nlogn + mlogm), where n and m are arrays' lengths.</p>
+
+<p><strong>Space complexity</strong> : from O(logn+logm) to O(n+m), depending on the implementation of the sorting algorithm. For the complexity analysis purposes, we ignore the memory required by inputs and outputs.</p>
+
+<h3>Follow-up Questions</h3>
+
+<ul>
+<li><code>What if the given array is already sorted? How would you optimize your algorithm?</code></li>
+</ul>
+
+<p>We can use Approach 2, dropping the sort of course. It will give us linear time and constant memory complexity.</p>
+
+<ul>
+<li><code>What if nums1's size is small compared to nums2's size? Which algorithm is better?</code></li>
+</ul>
+
+<p>Approach 1 is a good choice here as we use a hash map for the smaller array.</p>
+
+<ul>
+<li><code>What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?</code></li>
+</ul>
+
+<p>If nums1 fits into the memory, we can use Approach 1 to collect counts for nums1 into a hash map. Then, we can sequentially load and process nums2. If neither of the arrays fit into the memory, we can apply some partial processing strategies:
+* Split the numeric range into subranges that fits into the memory. Modify Approach 1 to collect counts only within a given subrange, and call the method multiple times (for each subrange).
+* Use an external sort for both arrays. Modify Approach 2 to load and process arrays sequentially.</p>
